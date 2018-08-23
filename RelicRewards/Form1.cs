@@ -79,8 +79,6 @@ namespace RelicRewards {
         public new void KeyDown(KeyboardHookEventArgs e) {
             // Print Screen key was pressed
             if (e.Key == Keys.PrintScreen) {
-                LB_KeyPressed.Text = "Print Screen Pressed";
-
                 // Grab image from screen (hopefully Relic rewards) and convert to black and white using a threshold
                 PrintScreenThreshold();
 
@@ -119,16 +117,16 @@ namespace RelicRewards {
 
 
                     // Two-lined parts
-                    if (TB_Part1.Text.Trim() == "BLUEPRINT" || !TB_Part1.Text.Trim().Contains(" ")) {
+                    if (TB_Part1.Text.Trim() == "BLUEPRINT") {
                         TB_Part1.Text = GetText(tessBaseAPI, GlobalVar.PART1, 582);
                     }
-                    if (TB_Part2.Text.Trim() == "BLUEPRINT" || !TB_Part2.Text.Trim().Contains(" ")) {
+                    if (TB_Part2.Text.Trim() == "BLUEPRINT") {
                         TB_Part2.Text = GetText(tessBaseAPI, GlobalVar.PART2, 582);
                     }
-                    if (TB_Part3.Text.Trim() == "BLUEPRINT" || !TB_Part3.Text.Trim().Contains(" ")) {
+                    if (TB_Part3.Text.Trim() == "BLUEPRINT") {
                         TB_Part3.Text = GetText(tessBaseAPI, GlobalVar.PART3, 582);
                     }
-                    if (TB_Part4.Text.Trim() == "BLUEPRINT" || !TB_Part4.Text.Trim().Contains(" ") && GlobalVar.NUMPEOPLE == 4) {
+                    if (TB_Part4.Text.Trim() == "BLUEPRINT" && GlobalVar.NUMPEOPLE == 4) {
                         TB_Part4.Text = GetText(tessBaseAPI, GlobalVar.PART4, 582);
                     }
 
@@ -217,18 +215,26 @@ namespace RelicRewards {
                     Debug.WriteLine(TB_Part4.Tag + " " + TB_Ducats4.Tag);
                     */
 
-                    // Sort by plat, then duc
+                    // Sort by Plat, then Ducats
                     platDuc = platDuc.OrderByDescending(o => Int32.Parse(o.plat.Tag.ToString())).ThenByDescending(o => Int32.Parse(o.ducats.Tag.ToString())).ToList();
 
-                    // If max plat is low, sort by the reverse
+                    // If max Plat is low, sort by the reverse
                     if (Int32.Parse(platDuc[0].plat.Tag.ToString()) < 15) {
                         platDuc = platDuc.OrderByDescending(o => Int32.Parse(o.ducats.Tag.ToString())).ThenByDescending(o => Int32.Parse(o.plat.Tag.ToString())).ToList();
                     }
 
+                    // Show best option
                     TB_Pick.Text = platDuc[0].plat.Text;
+
+                    // Show current amount of Plat (and Ducats) made in the current session
+                    if(Int32.Parse(platDuc[0].plat.Tag.ToString()) != -1 && Int32.Parse(platDuc[0].ducats.Tag.ToString()) != -1) {
+                        GlobalVar.PLAT += Int32.Parse(platDuc[0].plat.Tag.ToString());
+                        GlobalVar.DUCATS += Int32.Parse(platDuc[0].ducats.Tag.ToString());
+
+                        LB_PlatDucats.Text = string.Format("{0} p  ({1} duc)", GlobalVar.PLAT.ToString(), GlobalVar.DUCATS.ToString());
+                    }
                 }
                 catch (Exception ex) {
-                    LB_KeyPressed.Text = "Error: MAIN";
                     LogError("MAIN: " + ex.Message);
                 }
             }
@@ -239,6 +245,10 @@ namespace RelicRewards {
                 TB_Part4.Visible = false;
                 TB_Plat4.Visible = false;
                 TB_Ducats4.Visible = false;
+
+                TB_Part4.Text = "";
+                TB_Plat4.Text = "";
+                TB_Ducats4.Text = "";
 
                 GlobalVar.NUMPEOPLE = 3;
 
@@ -270,7 +280,7 @@ namespace RelicRewards {
             Bitmap printscreen = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
             System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(printscreen as Image);
             graphics.CopyFromScreen(0, 0, 0, 0, printscreen.Size);
-            //Bitmap printscreen = new Bitmap("test\\threepeople.jpg");
+            //Bitmap printscreen = new Bitmap("test\\9.jpg");
 
             using (System.Drawing.Graphics gr = System.Drawing.Graphics.FromImage(printscreen)) {
                 var gray_matrix = new float[][] {
@@ -365,6 +375,16 @@ namespace RelicRewards {
             guess = guess.Replace("VV", "W");
             */
 
+            // The only word we really want OCR to get 100% correct is "BLUEPRINT" because of 2-lined parts
+            // This cheats a little and considers BLU == BLUEPRINT
+            int index = guess.IndexOf("BLU");
+
+            if (index > 0) {
+                guess = guess.Substring(0, index);
+                guess += "BLUEPRINT";
+            }
+
+
             if ((!guess.Contains("CARRIER") && !guess.Contains("WYRM") && !guess.Contains("HELIOS")) &&
                 (guess.Contains("SYSTEMS") || guess.Contains("CHASSIS") || guess.Contains("NEUROPTICS"))) {
                 guess = guess.Replace(" BLUEPRINT", "");
@@ -372,7 +392,7 @@ namespace RelicRewards {
 
             // Match whatever result we get to the closest selling item name from Warframe.market
             // We want to ignore "BLUEPRINT" because this indicates that it's a 2-lined item
-            if (guess.Trim().Contains(" ") && !guess.Contains("FORMA")) {
+            if (guess != "BLUEPRINT" && !guess.Contains("FORMA")) {
                 Debug.Write("Old: " + guess);
 
                 guess = FindClosestWord(guess);
@@ -416,7 +436,7 @@ namespace RelicRewards {
             return word;
         }
 
-        // Warframe.market's API sucks. All of this work just to get lowest price of an item from ingame user
+        // Warframe.market's API forces us to aquire a large json with many orders. All of this work just to get lowest price of an item from ingame user
         private void FindPlat(Stream partOrder, TextBox part, TextBox partPlat) {
             using (StreamReader r = new StreamReader(partOrder)) {
                 string json = r.ReadToEnd();
@@ -434,7 +454,7 @@ namespace RelicRewards {
                 // Sort ascending order
                 plat.Sort();
 
-                // Get an average, because why not?
+                // Get an average from top 5 current lowest sells
                 if (plat.Count >= 5) {
                     int sum = 0;
                     double average;
@@ -445,7 +465,7 @@ namespace RelicRewards {
                     partPlat.Text = ((int)average).ToString() + " p";
                     part.Tag = average.ToString();
                 }
-                // Rare item? Alright then...
+                // Might be late at night or rare item, use lowest top sell
                 else if (plat.Count > 0) {
                     partPlat.Text = plat[0].ToString() + " p";
                     part.Tag = plat[0].ToString();
@@ -470,9 +490,8 @@ namespace RelicRewards {
                 }
             }
             catch (Exception ex) {
-                LB_KeyPressed.Text = "Error " + part.Text;
-                part.Tag = -1;
                 partPlat.Text = "UNKN[JP]";
+                part.Tag = -1;
 
                 if (part.Text == "") {
                     part.Text = "---";
@@ -527,7 +546,6 @@ namespace RelicRewards {
                 }
             }
             catch (Exception ex) {
-                LB_KeyPressed.Text = "Error " + ducats.Text;
                 ducats.Text = "UNKN[JD]";
 
                 if (File.Exists(partJson)) {

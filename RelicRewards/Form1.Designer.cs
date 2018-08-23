@@ -23,7 +23,7 @@ namespace RelicRewards {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.LB_KeyPressed = new System.Windows.Forms.Label();
+            this.LB_PlatDucats = new System.Windows.Forms.Label();
             this.LB_Part1 = new System.Windows.Forms.Label();
             this.LB_Part2 = new System.Windows.Forms.Label();
             this.LB_Part3 = new System.Windows.Forms.Label();
@@ -43,18 +43,20 @@ namespace RelicRewards {
             this.TB_Ducats3 = new System.Windows.Forms.TextBox();
             this.TB_Ducats4 = new System.Windows.Forms.TextBox();
             this.LB_ProgName = new System.Windows.Forms.Label();
+            this.LB_Total = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // LB_KeyPressed
+            // LB_PlatDucats
             // 
-            this.LB_KeyPressed.AutoSize = true;
-            this.LB_KeyPressed.BackColor = System.Drawing.Color.Transparent;
-            this.LB_KeyPressed.ForeColor = System.Drawing.Color.White;
-            this.LB_KeyPressed.Location = new System.Drawing.Point(12, 9);
-            this.LB_KeyPressed.Name = "LB_KeyPressed";
-            this.LB_KeyPressed.Size = new System.Drawing.Size(112, 13);
-            this.LB_KeyPressed.TabIndex = 0;
-            this.LB_KeyPressed.Text = "Waiting on keypress...";
+            this.LB_PlatDucats.BackColor = System.Drawing.Color.Transparent;
+            this.LB_PlatDucats.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LB_PlatDucats.ForeColor = System.Drawing.Color.White;
+            this.LB_PlatDucats.Location = new System.Drawing.Point(338, 150);
+            this.LB_PlatDucats.Name = "LB_PlatDucats";
+            this.LB_PlatDucats.Size = new System.Drawing.Size(100, 20);
+            this.LB_PlatDucats.TabIndex = 0;
+            this.LB_PlatDucats.Text = "0 p  (0 duc)";
+            this.LB_PlatDucats.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // LB_Part1
             // 
@@ -145,7 +147,7 @@ namespace RelicRewards {
             this.LB_Pick.AutoSize = true;
             this.LB_Pick.BackColor = System.Drawing.Color.Transparent;
             this.LB_Pick.ForeColor = System.Drawing.Color.White;
-            this.LB_Pick.Location = new System.Drawing.Point(168, 149);
+            this.LB_Pick.Location = new System.Drawing.Point(22, 153);
             this.LB_Pick.Name = "LB_Pick";
             this.LB_Pick.Size = new System.Drawing.Size(31, 13);
             this.LB_Pick.TabIndex = 9;
@@ -156,7 +158,7 @@ namespace RelicRewards {
             this.TB_Pick.BackColor = System.Drawing.Color.Black;
             this.TB_Pick.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TB_Pick.ForeColor = System.Drawing.Color.White;
-            this.TB_Pick.Location = new System.Drawing.Point(205, 146);
+            this.TB_Pick.Location = new System.Drawing.Point(59, 150);
             this.TB_Pick.Name = "TB_Pick";
             this.TB_Pick.ReadOnly = true;
             this.TB_Pick.Size = new System.Drawing.Size(233, 20);
@@ -255,11 +257,22 @@ namespace RelicRewards {
             this.LB_ProgName.AutoSize = true;
             this.LB_ProgName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LB_ProgName.ForeColor = System.Drawing.Color.DarkGray;
-            this.LB_ProgName.Location = new System.Drawing.Point(0, 160);
+            this.LB_ProgName.Location = new System.Drawing.Point(12, 9);
             this.LB_ProgName.Name = "LB_ProgName";
-            this.LB_ProgName.Size = new System.Drawing.Size(56, 13);
+            this.LB_ProgName.Size = new System.Drawing.Size(76, 13);
             this.LB_ProgName.TabIndex = 19;
-            this.LB_ProgName.Text = "Rich Relic";
+            this.LB_ProgName.Text = "Relic Rewards";
+            // 
+            // LB_Total
+            // 
+            this.LB_Total.AutoSize = true;
+            this.LB_Total.BackColor = System.Drawing.Color.Transparent;
+            this.LB_Total.ForeColor = System.Drawing.Color.White;
+            this.LB_Total.Location = new System.Drawing.Point(298, 153);
+            this.LB_Total.Name = "LB_Total";
+            this.LB_Total.Size = new System.Drawing.Size(34, 13);
+            this.LB_Total.TabIndex = 20;
+            this.LB_Total.Text = "Total:";
             // 
             // Form1
             // 
@@ -267,6 +280,7 @@ namespace RelicRewards {
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(459, 182);
+            this.Controls.Add(this.LB_Total);
             this.Controls.Add(this.LB_ProgName);
             this.Controls.Add(this.TB_Ducats4);
             this.Controls.Add(this.TB_Ducats3);
@@ -286,7 +300,7 @@ namespace RelicRewards {
             this.Controls.Add(this.LB_Part3);
             this.Controls.Add(this.LB_Part2);
             this.Controls.Add(this.LB_Part1);
-            this.Controls.Add(this.LB_KeyPressed);
+            this.Controls.Add(this.LB_PlatDucats);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form1";
             this.Opacity = 0.75D;
@@ -299,7 +313,7 @@ namespace RelicRewards {
 
         #endregion
 
-        private System.Windows.Forms.Label LB_KeyPressed;
+        private System.Windows.Forms.Label LB_PlatDucats;
         private System.Windows.Forms.Label LB_Part1;
         private System.Windows.Forms.Label LB_Part2;
         private System.Windows.Forms.Label LB_Part3;
@@ -319,6 +333,7 @@ namespace RelicRewards {
         private System.Windows.Forms.TextBox TB_Ducats3;
         private System.Windows.Forms.TextBox TB_Ducats4;
         private System.Windows.Forms.Label LB_ProgName;
+        private System.Windows.Forms.Label LB_Total;
     }
 }
 
