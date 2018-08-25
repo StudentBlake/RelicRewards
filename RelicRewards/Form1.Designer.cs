@@ -50,6 +50,7 @@ namespace RelicRewards {
             // 
             this.LB_PlatDucats.BackColor = System.Drawing.Color.Transparent;
             this.LB_PlatDucats.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LB_PlatDucats.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LB_PlatDucats.ForeColor = System.Drawing.Color.White;
             this.LB_PlatDucats.Location = new System.Drawing.Point(338, 150);
             this.LB_PlatDucats.Name = "LB_PlatDucats";
@@ -62,6 +63,7 @@ namespace RelicRewards {
             // 
             this.LB_Part1.AutoSize = true;
             this.LB_Part1.BackColor = System.Drawing.Color.Transparent;
+            this.LB_Part1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LB_Part1.ForeColor = System.Drawing.Color.White;
             this.LB_Part1.Location = new System.Drawing.Point(15, 41);
             this.LB_Part1.Name = "LB_Part1";
@@ -73,6 +75,7 @@ namespace RelicRewards {
             // 
             this.LB_Part2.AutoSize = true;
             this.LB_Part2.BackColor = System.Drawing.Color.Transparent;
+            this.LB_Part2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LB_Part2.ForeColor = System.Drawing.Color.White;
             this.LB_Part2.Location = new System.Drawing.Point(15, 67);
             this.LB_Part2.Name = "LB_Part2";
@@ -84,6 +87,7 @@ namespace RelicRewards {
             // 
             this.LB_Part3.AutoSize = true;
             this.LB_Part3.BackColor = System.Drawing.Color.Transparent;
+            this.LB_Part3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LB_Part3.ForeColor = System.Drawing.Color.White;
             this.LB_Part3.Location = new System.Drawing.Point(15, 93);
             this.LB_Part3.Name = "LB_Part3";
@@ -95,6 +99,7 @@ namespace RelicRewards {
             // 
             this.LB_Part4.AutoSize = true;
             this.LB_Part4.BackColor = System.Drawing.Color.Transparent;
+            this.LB_Part4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LB_Part4.ForeColor = System.Drawing.Color.White;
             this.LB_Part4.Location = new System.Drawing.Point(15, 119);
             this.LB_Part4.Name = "LB_Part4";
@@ -105,6 +110,8 @@ namespace RelicRewards {
             // TB_Part1
             // 
             this.TB_Part1.BackColor = System.Drawing.Color.Black;
+            this.TB_Part1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TB_Part1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TB_Part1.ForeColor = System.Drawing.Color.White;
             this.TB_Part1.Location = new System.Drawing.Point(59, 38);
             this.TB_Part1.Name = "TB_Part1";
@@ -115,6 +122,8 @@ namespace RelicRewards {
             // TB_Part2
             // 
             this.TB_Part2.BackColor = System.Drawing.Color.Black;
+            this.TB_Part2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TB_Part2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TB_Part2.ForeColor = System.Drawing.Color.White;
             this.TB_Part2.Location = new System.Drawing.Point(59, 64);
             this.TB_Part2.Name = "TB_Part2";
@@ -125,6 +134,8 @@ namespace RelicRewards {
             // TB_Part3
             // 
             this.TB_Part3.BackColor = System.Drawing.Color.Black;
+            this.TB_Part3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TB_Part3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TB_Part3.ForeColor = System.Drawing.Color.White;
             this.TB_Part3.Location = new System.Drawing.Point(59, 90);
             this.TB_Part3.Name = "TB_Part3";
@@ -135,6 +146,8 @@ namespace RelicRewards {
             // TB_Part4
             // 
             this.TB_Part4.BackColor = System.Drawing.Color.Black;
+            this.TB_Part4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TB_Part4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TB_Part4.ForeColor = System.Drawing.Color.White;
             this.TB_Part4.Location = new System.Drawing.Point(59, 116);
             this.TB_Part4.Name = "TB_Part4";
@@ -146,6 +159,7 @@ namespace RelicRewards {
             // 
             this.LB_Pick.AutoSize = true;
             this.LB_Pick.BackColor = System.Drawing.Color.Transparent;
+            this.LB_Pick.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LB_Pick.ForeColor = System.Drawing.Color.White;
             this.LB_Pick.Location = new System.Drawing.Point(22, 153);
             this.LB_Pick.Name = "LB_Pick";
@@ -156,6 +170,7 @@ namespace RelicRewards {
             // TB_Pick
             // 
             this.TB_Pick.BackColor = System.Drawing.Color.Black;
+            this.TB_Pick.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TB_Pick.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TB_Pick.ForeColor = System.Drawing.Color.White;
             this.TB_Pick.Location = new System.Drawing.Point(59, 150);
@@ -167,6 +182,8 @@ namespace RelicRewards {
             // TB_Plat1
             // 
             this.TB_Plat1.BackColor = System.Drawing.Color.Black;
+            this.TB_Plat1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TB_Plat1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TB_Plat1.ForeColor = System.Drawing.Color.White;
             this.TB_Plat1.Location = new System.Drawing.Point(298, 38);
             this.TB_Plat1.Name = "TB_Plat1";
@@ -178,6 +195,8 @@ namespace RelicRewards {
             // TB_Plat2
             // 
             this.TB_Plat2.BackColor = System.Drawing.Color.Black;
+            this.TB_Plat2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TB_Plat2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TB_Plat2.ForeColor = System.Drawing.Color.White;
             this.TB_Plat2.Location = new System.Drawing.Point(298, 64);
             this.TB_Plat2.Name = "TB_Plat2";
@@ -189,6 +208,8 @@ namespace RelicRewards {
             // TB_Plat3
             // 
             this.TB_Plat3.BackColor = System.Drawing.Color.Black;
+            this.TB_Plat3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TB_Plat3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TB_Plat3.ForeColor = System.Drawing.Color.White;
             this.TB_Plat3.Location = new System.Drawing.Point(298, 90);
             this.TB_Plat3.Name = "TB_Plat3";
@@ -200,6 +221,8 @@ namespace RelicRewards {
             // TB_Plat4
             // 
             this.TB_Plat4.BackColor = System.Drawing.Color.Black;
+            this.TB_Plat4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TB_Plat4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TB_Plat4.ForeColor = System.Drawing.Color.White;
             this.TB_Plat4.Location = new System.Drawing.Point(298, 116);
             this.TB_Plat4.Name = "TB_Plat4";
@@ -211,6 +234,8 @@ namespace RelicRewards {
             // TB_Ducats1
             // 
             this.TB_Ducats1.BackColor = System.Drawing.Color.Black;
+            this.TB_Ducats1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TB_Ducats1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TB_Ducats1.ForeColor = System.Drawing.Color.White;
             this.TB_Ducats1.Location = new System.Drawing.Point(371, 38);
             this.TB_Ducats1.Name = "TB_Ducats1";
@@ -222,6 +247,8 @@ namespace RelicRewards {
             // TB_Ducats2
             // 
             this.TB_Ducats2.BackColor = System.Drawing.Color.Black;
+            this.TB_Ducats2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TB_Ducats2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TB_Ducats2.ForeColor = System.Drawing.Color.White;
             this.TB_Ducats2.Location = new System.Drawing.Point(371, 64);
             this.TB_Ducats2.Name = "TB_Ducats2";
@@ -233,6 +260,8 @@ namespace RelicRewards {
             // TB_Ducats3
             // 
             this.TB_Ducats3.BackColor = System.Drawing.Color.Black;
+            this.TB_Ducats3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TB_Ducats3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TB_Ducats3.ForeColor = System.Drawing.Color.White;
             this.TB_Ducats3.Location = new System.Drawing.Point(371, 90);
             this.TB_Ducats3.Name = "TB_Ducats3";
@@ -244,6 +273,8 @@ namespace RelicRewards {
             // TB_Ducats4
             // 
             this.TB_Ducats4.BackColor = System.Drawing.Color.Black;
+            this.TB_Ducats4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TB_Ducats4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TB_Ducats4.ForeColor = System.Drawing.Color.White;
             this.TB_Ducats4.Location = new System.Drawing.Point(371, 116);
             this.TB_Ducats4.Name = "TB_Ducats4";
@@ -267,6 +298,7 @@ namespace RelicRewards {
             // 
             this.LB_Total.AutoSize = true;
             this.LB_Total.BackColor = System.Drawing.Color.Transparent;
+            this.LB_Total.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LB_Total.ForeColor = System.Drawing.Color.White;
             this.LB_Total.Location = new System.Drawing.Point(298, 153);
             this.LB_Total.Name = "LB_Total";

@@ -467,7 +467,7 @@ namespace RelicRewards {
                 }
                 // Might be late at night or rare item, use lowest top sell
                 else if (plat.Count > 0) {
-                    partPlat.Text = plat[0].ToString() + " p";
+                    partPlat.Text = "*" + plat[0].ToString() + " p";
                     part.Tag = plat[0].ToString();
                 }
                 // No one is online or Warframe.market doesn't have item
@@ -547,6 +547,7 @@ namespace RelicRewards {
             }
             catch (Exception ex) {
                 ducats.Text = "UNKN[JD]";
+                ducats.Tag = -1;
 
                 if (File.Exists(partJson)) {
                     File.Delete(partJson);
