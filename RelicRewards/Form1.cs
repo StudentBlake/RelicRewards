@@ -1,3 +1,9 @@
+/* 
+ * Project: Relic Rewards
+ * Description: Automatically find the best value from Warframe relic rewards
+ * Created by StudentBlake
+*/
+
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -110,7 +116,9 @@ namespace RelicRewards {
 
                     TB_Part1.Text = GetText(tessBaseAPI, GlobalVar.PART1);
                     TB_Part2.Text = GetText(tessBaseAPI, GlobalVar.PART2);
-                    TB_Part3.Text = GetText(tessBaseAPI, GlobalVar.PART3);
+                    if (GlobalVar.NUMPEOPLE >= 3) {
+                        TB_Part3.Text = GetText(tessBaseAPI, GlobalVar.PART3);
+                    }
                     if (GlobalVar.NUMPEOPLE == 4) {
                         TB_Part4.Text = GetText(tessBaseAPI, GlobalVar.PART4);
                     }
@@ -123,7 +131,7 @@ namespace RelicRewards {
                     if (TB_Part2.Text.Trim() == "BLUEPRINT") {
                         TB_Part2.Text = GetText(tessBaseAPI, GlobalVar.PART2, 582);
                     }
-                    if (TB_Part3.Text.Trim() == "BLUEPRINT") {
+                    if (TB_Part3.Text.Trim() == "BLUEPRINT" && GlobalVar.NUMPEOPLE >= 3) {
                         TB_Part3.Text = GetText(tessBaseAPI, GlobalVar.PART3, 582);
                     }
                     if (TB_Part4.Text.Trim() == "BLUEPRINT" && GlobalVar.NUMPEOPLE == 4) {
@@ -138,7 +146,9 @@ namespace RelicRewards {
                     using (var client = new WebClient()) {
                         GetPriceJson(client, TB_Part1, TB_Plat1);
                         GetPriceJson(client, TB_Part2, TB_Plat2);
-                        GetPriceJson(client, TB_Part3, TB_Plat3);
+                        if (GlobalVar.NUMPEOPLE >= 3) {
+                            GetPriceJson(client, TB_Part3, TB_Plat3);
+                        }
                         if (GlobalVar.NUMPEOPLE == 4) {
                             GetPriceJson(client, TB_Part4, TB_Plat4);
                         }
@@ -147,7 +157,9 @@ namespace RelicRewards {
                         // These get cached
                         GetDucatsJson(client, TB_Part1, TB_Ducats1);
                         GetDucatsJson(client, TB_Part2, TB_Ducats2);
-                        GetDucatsJson(client, TB_Part3, TB_Ducats3);
+                        if (GlobalVar.NUMPEOPLE >= 3) {
+                            GetDucatsJson(client, TB_Part3, TB_Ducats3);
+                        }
                         if (GlobalVar.NUMPEOPLE == 4) {
                             GetDucatsJson(client, TB_Part4, TB_Ducats4);
                         }
@@ -204,7 +216,9 @@ namespace RelicRewards {
                     List<PlatDucats> platDuc = new List<PlatDucats>();
                     platDuc.Add(new PlatDucats(TB_Part1, TB_Ducats1));
                     platDuc.Add(new PlatDucats(TB_Part2, TB_Ducats2));
-                    platDuc.Add(new PlatDucats(TB_Part3, TB_Ducats3));
+                    if (GlobalVar.NUMPEOPLE >= 3) {
+                        platDuc.Add(new PlatDucats(TB_Part3, TB_Ducats3));
+                    }
                     if (GlobalVar.NUMPEOPLE == 4) {
                         platDuc.Add(new PlatDucats(TB_Part4, TB_Ducats4));
                     }
@@ -227,7 +241,7 @@ namespace RelicRewards {
                     TB_Pick.Text = platDuc[0].plat.Text;
 
                     // Show current amount of Plat (and Ducats) made in the current session
-                    if(Int32.Parse(platDuc[0].plat.Tag.ToString()) != -1 && Int32.Parse(platDuc[0].ducats.Tag.ToString()) != -1) {
+                    if (Int32.Parse(platDuc[0].plat.Tag.ToString()) != -1 && Int32.Parse(platDuc[0].ducats.Tag.ToString()) != -1) {
                         GlobalVar.PLAT += Int32.Parse(platDuc[0].plat.Tag.ToString());
                         GlobalVar.DUCATS += Int32.Parse(platDuc[0].ducats.Tag.ToString());
 
@@ -238,17 +252,24 @@ namespace RelicRewards {
                     LogError("MAIN: " + ex.Message);
                 }
             }
-            else if (e.Key == Keys.D3 && e.isAltPressed) {
+            else if (e.isAltPressed && e.Key == Keys.D2) {
+                Debug.WriteLine("Switched to 2 people");
+
+                ClearAllExceptTotal();
+                EnableRow(false, LB_Part3, TB_Part3, TB_Plat3, TB_Ducats3);
+                EnableRow(false, LB_Part4, TB_Part4, TB_Plat4, TB_Ducats4);
+
+                GlobalVar.NUMPEOPLE = 2;
+
+                GlobalVar.PART1 = 725;
+                GlobalVar.PART2 = 1300;
+            }
+            else if (e.isAltPressed && e.Key == Keys.D3) {
                 Debug.WriteLine("Switched to 3 people");
 
-                LB_Part4.Visible = false;
-                TB_Part4.Visible = false;
-                TB_Plat4.Visible = false;
-                TB_Ducats4.Visible = false;
-
-                TB_Part4.Text = "";
-                TB_Plat4.Text = "";
-                TB_Ducats4.Text = "";
+                ClearAllExceptTotal();
+                EnableRow(true, LB_Part3, TB_Part3, TB_Plat3, TB_Ducats3);
+                EnableRow(false, LB_Part4, TB_Part4, TB_Plat4, TB_Ducats4);
 
                 GlobalVar.NUMPEOPLE = 3;
 
@@ -256,13 +277,12 @@ namespace RelicRewards {
                 GlobalVar.PART2 = 1011;
                 GlobalVar.PART3 = 1590;
             }
-            else if (e.Key == Keys.D4 && e.isAltPressed) {
+            else if (e.isAltPressed && e.Key == Keys.D4) {
                 Debug.WriteLine("Switched to 4 people");
 
-                LB_Part4.Visible = true;
-                TB_Part4.Visible = true;
-                TB_Plat4.Visible = true;
-                TB_Ducats4.Visible = true;
+                ClearAllExceptTotal();
+                EnableRow(true, LB_Part3, TB_Part3, TB_Plat3, TB_Ducats3);
+                EnableRow(true, LB_Part4, TB_Part4, TB_Plat4, TB_Ducats4);
 
                 GlobalVar.NUMPEOPLE = 4;
 
@@ -280,7 +300,7 @@ namespace RelicRewards {
             Bitmap printscreen = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
             System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(printscreen as Image);
             graphics.CopyFromScreen(0, 0, 0, 0, printscreen.Size);
-            //Bitmap printscreen = new Bitmap("test\\9.jpg");
+            //Bitmap printscreen = new Bitmap("test\\22.jpg");
 
             using (System.Drawing.Graphics gr = System.Drawing.Graphics.FromImage(printscreen)) {
                 var gray_matrix = new float[][] {
@@ -418,7 +438,7 @@ namespace RelicRewards {
 
                 foreach (var item in items["payload"]["items"]["en"]) {
                     string currentItem = item["item_name"].ToString().ToUpper();
-                    int levenshteinDistance = lev.Distance(currentItem);
+                    int levenshteinDistance = lev.DistanceFrom(currentItem);
 
                     //Debug.WriteLine((string)item["item_name"] + " | " + levenshteinDistance);
 
@@ -561,6 +581,33 @@ namespace RelicRewards {
             }
         }
 
+        public void ClearAllExceptTotal() {
+            TB_Part1.Text = "";
+            TB_Plat1.Text = "";
+            TB_Ducats1.Text = "";
+
+            TB_Part2.Text = "";
+            TB_Plat2.Text = "";
+            TB_Ducats2.Text = "";
+
+            TB_Part3.Text = "";
+            TB_Plat3.Text = "";
+            TB_Ducats3.Text = "";
+
+            TB_Part4.Text = "";
+            TB_Plat4.Text = "";
+            TB_Ducats4.Text = "";
+
+            TB_Pick.Text = "";
+        }
+
+        public void EnableRow(bool enable, Label LB_Part, TextBox TB_Part, TextBox TB_Plat, TextBox TB_Ducats) {
+            LB_Part.Visible = enable;
+            TB_Part.Visible = enable;
+            TB_Plat.Visible = enable;
+            TB_Ducats.Visible = enable;
+        }
+
         private void LogError(string logMessage) {
             // Save copy of rewards capture
             string rewards = Guid.NewGuid().ToString() + ".jpg";
@@ -569,8 +616,8 @@ namespace RelicRewards {
                 w.Write("\r\nLog Entry : ");
                 w.WriteLine("{0} {1}", DateTime.Now.ToLongTimeString(),
                     DateTime.Now.ToLongDateString());
-                w.WriteLine("  :{0}", logMessage);
-                w.WriteLine("  :Rewards: {0}", rewards);
+                w.WriteLine("  +{0}", logMessage);
+                w.WriteLine("  +Rewards: {0}", rewards);
                 w.WriteLine("-------------------------------");
             }
             File.Copy("rewards.jpg", "error\\" + rewards);
