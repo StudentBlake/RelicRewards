@@ -21,7 +21,7 @@ Automatically find the best value from Warframe relic rewards
 ## Build Instructions
 * Open **RelicRewards.sln**
 * Go to *Build*, then *Build Solution*
-* Extract [**tessdata.zip**](https://github.com/tvn-cosine/tessdata) to `RelicRewards/bin/Debug/` folder
+* Extract [**tessdata.zip**](https://github.com/StudentBlake/RelicRewards/releases/download/v0.0/tessdata.zip) to `RelicRewards/bin/Debug/` folder
 * Run **RelicRewards.exe**
 
 ## Disclaimer
