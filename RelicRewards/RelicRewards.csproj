@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Costura, Version=3.1.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
+      <HintPath>..\packages\Costura.Fody.3.1.0\lib\net46\Costura.dll</HintPath>
+    </Reference>
     <Reference Include="Fastenshtein, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Fastenshtein.1.0.0.5\lib\net40-client\Fastenshtein.dll</HintPath>
     </Reference>
@@ -106,7 +109,11 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\tesseract.net.4.0.0.16\build\tesseract.net.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\tesseract.net.4.0.0.16\build\tesseract.net.targets'))" />
     <Error Condition="!Exists('..\packages\leptonica.net.1.75.0.5\build\leptonica.net.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\leptonica.net.1.75.0.5\build\leptonica.net.targets'))" />
+    <Error Condition="!Exists('..\packages\Fody.3.1.7\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.3.1.7\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\Costura.Fody.3.1.0\build\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.3.1.0\build\Costura.Fody.targets'))" />
   </Target>
   <Import Project="..\packages\tesseract.net.4.0.0.16\build\tesseract.net.targets" Condition="Exists('..\packages\tesseract.net.4.0.0.16\build\tesseract.net.targets')" />
   <Import Project="..\packages\leptonica.net.1.75.0.5\build\leptonica.net.targets" Condition="Exists('..\packages\leptonica.net.1.75.0.5\build\leptonica.net.targets')" />
+  <Import Project="..\packages\Fody.3.1.7\build\Fody.targets" Condition="Exists('..\packages\Fody.3.1.7\build\Fody.targets')" />
+  <Import Project="..\packages\Costura.Fody.3.1.0\build\Costura.Fody.targets" Condition="Exists('..\packages\Costura.Fody.3.1.0\build\Costura.Fody.targets')" />
 </Project>
