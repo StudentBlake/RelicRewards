@@ -1,6 +1,6 @@
 /* 
  * Project: Relic Rewards
- * Description: Automatically find the best value from Warframe relic rewards
+ * Description: Automatically get the best value for your relics
  * Created by StudentBlake
 */
 
@@ -42,7 +42,7 @@ namespace RelicRewards {
             var KeyboardHook = new Hook("Global Action Hook");
             KeyboardHook.KeyDownEvent += KeyDown;
 
-            // Start form on bottom right
+            // Start form on bottom left
             Rectangle workingArea = Screen.GetWorkingArea(this);
             this.Location = new Point(0, workingArea.Bottom - Size.Height);
 
@@ -63,7 +63,7 @@ namespace RelicRewards {
             // Create error log
             if (!File.Exists("error\\errorlog.txt")) {
                 using (StreamWriter w = File.CreateText("error\\errorlog.txt")) {
-                    w.WriteLine("** RICH RELIC ERROR LOG **");
+                    w.WriteLine("** RELIC REWARDS ERROR LOG **");
                 }
             }
         }
@@ -85,6 +85,7 @@ namespace RelicRewards {
         public new void KeyDown(KeyboardHookEventArgs e) {
             // Print Screen key was pressed
             if (e.Key == Keys.PrintScreen) {
+                Debug.WriteLine("Print Screen pressed");
                 // Grab image from screen (hopefully Relic rewards) and convert to black and white using a threshold
                 PrintScreenThreshold();
 
@@ -252,7 +253,7 @@ namespace RelicRewards {
                     LogError("MAIN: " + ex.Message);
                 }
             }
-            else if (e.isAltPressed && e.Key == Keys.D2) {
+            else if (e.Key == Keys.NumPad2) {
                 Debug.WriteLine("Switched to 2 people");
 
                 ClearAllExceptTotal();
@@ -264,7 +265,7 @@ namespace RelicRewards {
                 GlobalVar.PART1 = 725;
                 GlobalVar.PART2 = 1300;
             }
-            else if (e.isAltPressed && e.Key == Keys.D3) {
+            else if (e.Key == Keys.NumPad3) {
                 Debug.WriteLine("Switched to 3 people");
 
                 ClearAllExceptTotal();
@@ -277,7 +278,7 @@ namespace RelicRewards {
                 GlobalVar.PART2 = 1011;
                 GlobalVar.PART3 = 1590;
             }
-            else if (e.isAltPressed && e.Key == Keys.D4) {
+            else if (e.Key == Keys.NumPad4) {
                 Debug.WriteLine("Switched to 4 people");
 
                 ClearAllExceptTotal();
