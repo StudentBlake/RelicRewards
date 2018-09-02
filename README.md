@@ -33,5 +33,11 @@ Once this is completed, it will fetch the 5 top currently online in game orders 
 The Ducat JSON is cached because the value never changes, but online orders are always refreshed. 
 The program will calculate the best pick based on Platinum and Ducats and display the result.
 
+## Want to help? Submit a pull request for any of the following:
+* Support multiple resolutions (1080p priority, then others)
+* Potential bug where the program randomly stops recognizing inputs
+* Refactor code
+* QoL improvements or bug fixes
+
 ## Disclaimer
 This software is unfinished and unoptimized! Please use with caution.
