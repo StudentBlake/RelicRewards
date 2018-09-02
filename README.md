@@ -25,5 +25,13 @@ Automatically get the best value for your relics
 * Extract [**tessdata.zip**](https://github.com/StudentBlake/RelicRewards/releases/download/v0.0/tessdata.zip) to `RelicRewards/bin/Debug/` folder
 * Run **RelicRewards.exe**
 
+## How does it work?
+As soon as you press Print Screen, the program takes a picture of the relic rewards. Once that happens, it tries to improve the picture to make it more readable for the program. 
+Using Tesseract (and OCR library), it recognizes the text and compares the result against a list of items from Warframe.market. 
+This will always find a positive match no matter what against the current item list from Warframe.market. 
+Once this is completed, it will fetch the 5 top currently online in game orders and find the average. 
+The Ducat JSON is cached because the value never changes, but online orders are always refreshed. 
+The program will calculate the best pick based on Platinum and Ducats and display the result.
+
 ## Disclaimer
 This software is unfinished and unoptimized! Please use with caution.
