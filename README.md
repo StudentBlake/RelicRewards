@@ -11,13 +11,13 @@ Automatically get the best value for your relics
 
 ## Instructions
 * ONLY WORKS AT 1440P RESOLUTION WITH FULL SCALE HUD AT THE MOMENT
+* If the number of rewards isn't 4, you must manually adjust using the number pad (Ex: For 3 rewards, you'd have to press 3 on the number pad)
 * Press the Print Screen button on the relic rewards screen
-* If the number of rewards isn't 4, you must manually adjust using the number pad (for example, 3 rewards would be Num3)
-* To exit the program, press the Pause button
+* To exit the program, press the Pause/Break button
 
 ## Requirements
-* Visual Studio 2017
-* NuGet Package Manager
+* Visual Studio 2019
+* [**tessdata.zip**](https://github.com/StudentBlake/RelicRewards/releases/download/v0.0/tessdata.zip)
 
 ## Build Instructions
 * Open **RelicRewards.sln**
@@ -26,12 +26,7 @@ Automatically get the best value for your relics
 * Run **RelicRewards.exe**
 
 ## How does it work?
-As soon as you press Print Screen, the program takes a picture of the relic rewards. Once that happens, it tries to improve the picture to make it more readable for the program. 
-Using Tesseract (and OCR library), it recognizes the text and compares the result against a list of items from Warframe.market. 
-This will always find a positive match no matter what against the current item list from Warframe.market. 
-Once this is completed, it will fetch the 5 top currently online in game orders and find the average. 
-The Ducat JSON is cached because the value never changes, but online orders are always refreshed. 
-The program will calculate the best pick based on Platinum and Ducats and display the result.
+By pressing Print Screen, the program scans the screen and tries to recognize the Prime part pieces. It then calculates which part is the best one to pick. By default, it priorities Ducat value for any pieces worth under 15 plat.
 
 ## Want to help? Feel free to submit a pull request! Here are some ideas:
 * Support multiple resolutions (1080p priority, then others)
