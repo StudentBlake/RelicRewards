@@ -41,7 +41,7 @@ namespace RelicRewards
         public Main()
         {
             InitializeComponent();
-            this.Text = LB_ProgName.Text = "Relic Rewards v0.3";
+            this.Text = LB_ProgName.Text = "Relic Rewards v0.3.1";
 
             // Listen for global KeyDown events
             var KeyboardHook = new Hook("Global Action Hook");
