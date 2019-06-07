@@ -77,7 +77,7 @@ namespace RelicRewards
             }
         }
 
-        // Ignore mouse interaction with form to fake an overlay
+        // Ignore mouse interaction with form to create an overlay
         [DllImport("user32.dll", SetLastError = true)]
         static extern int GetWindowLong(IntPtr hWnd, int nIndex);
         [DllImport("user32.dll")]
@@ -98,7 +98,7 @@ namespace RelicRewards
             if (e.Key == Keys.PrintScreen)
             {
                 Debug.WriteLine("Print Screen pressed");
-                // Grab image from screen (hopefully Relic rewards) and convert to black and white using a threshold
+                // Grab image from screen and convert to black and white using a threshold
                 PrintScreenThreshold();
 
                 // Process text from image
@@ -191,53 +191,6 @@ namespace RelicRewards
                         }
 
                     }
-
-                    /* Testing a cleaner method
-                    // Lazy way of finding the max
-                    List<TextBox> primePlat = new List<TextBox>();
-                    primePlat.Add(TB_Part1);
-                    primePlat.Add(TB_Part2);
-                    primePlat.Add(TB_Part3);
-                    primePlat.Add(TB_Part4);
-
-                    List<TextBox> primeDuc = new List<TextBox>();
-                    primeDuc.Add(TB_Ducats1);
-                    primeDuc.Add(TB_Ducats2);
-                    primeDuc.Add(TB_Ducats3);
-                    primeDuc.Add(TB_Ducats4);
-
-
-
-                    // Get most expensive part and display it
-                    int maxIndex = 0;
-                    int max = Int32.Parse(primePlat[0].Tag.ToString());
-                    string finalPick = primePlat[0].Text;
-                    for (int i = 1; i < 4; i++) {
-                        if (max < Int32.Parse(primePlat[i].Tag.ToString())) {
-                            max = Int32.Parse(primePlat[i].Tag.ToString());
-                            finalPick = primePlat[i].Text;
-                            maxIndex = i;
-                        }
-                        else if (max == Int32.Parse(primePlat[i].Tag.ToString()) && max != -1) {
-                            if (Int32.Parse(primeDuc[maxIndex].Tag.ToString()) > Int32.Parse(primeDuc[i].Tag.ToString())) {
-                                finalPick = primePlat[maxIndex].Text;
-                            }
-                            else {
-                                finalPick = primePlat[i].Text;
-                            }
-                        }
-                    }
-
-                    // If max item is less than 10 Plat, sort by Ducats
-                    if (max <= 10) {
-                        max = Int32.Parse(primeDuc[0].Tag.ToString());
-                        for (int i = 1; i < 4; i++) {
-                            if (max < Int32.Parse(primeDuc[i].Tag.ToString())) {
-                                max = Int32.Parse(primeDuc[i].Tag.ToString());
-                                finalPick = primePlat[i].Text;
-                            }
-                        }
-                    }*/
 
                     List<PlatDucats> platDuc = new List<PlatDucats>();
                     platDuc.Add(new PlatDucats(TB_Part1, TB_Ducats1));
@@ -382,62 +335,8 @@ namespace RelicRewards
             stringBuilder = stringBuilder.Replace("\n", String.Empty);
             string guess = stringBuilder.ToString();
 
-            // Probably not necessary anymore
-            /*
-            // Predict common words to ignore noise
-            // Not sure if necessary with new FindClosestWord function
-            int index;
-            List<string> predict = new List<string>();
-
-            // Add common word beginnings here
-            predict.Add("NEU");
-
-            foreach (string word in predict) {
-                index = guess.IndexOf(word);
-
-                if (index > 0) {
-                    guess = guess.Substring(0, index);
-
-                    if (word == "NEU") {
-                        guess = guess.Substring(0, index);
-                        guess += "NEUROPTICS";
-                    }
-                    break;
-                }
-            }
-
-            // Remove any stray characters after last word
-            // Not sure if necessary with new FindClosestWord function
-            List<string> terminators = new List<string>();
-
-            // Add terminating words here
-            terminators.Add("BLUEPRINT");
-            terminators.Add("RECEIVER");
-            terminators.Add("STRING");
-            terminators.Add("HEAD");
-            terminators.Add("BLADE");
-            terminators.Add("BARREL");
-            terminators.Add("NEUROPTICS");
-            terminators.Add("LIMB");
-            terminators.Add("STOCK");
-            terminators.Add("GRIP");
-            terminators.Add("HILT");
-
-            foreach (string word in terminators) {
-                index = guess.IndexOf(word);
-
-                if (index > 0) {
-                    guess = guess.Substring(0, index + word.Length);
-                    break;
-                }
-            }
-
-            // OCR is great, isn't it?
-            guess = guess.Replace("VV", "W");
-            */
-
             // The only word we really want OCR to get 100% correct is "BLUEPRINT" because of 2-lined parts
-            // This cheats a little and considers BLU == BLUEPRINT
+            // This considers BLU == BLUEPRINT
             int index = guess.IndexOf("BLU");
 
             if (index > 0)
@@ -505,7 +404,7 @@ namespace RelicRewards
             return word;
         }
 
-        // Warframe.market's API forces us to aquire a large json with many orders. All of this work just to get lowest price of an item from ingame user
+        // Warframe.market's API forces us to aquire a large json with many orders
         private void FindPlat(Stream partOrder, TextBox part, TextBox partPlat)
         {
             using (StreamReader r = new StreamReader(partOrder))
