@@ -94,10 +94,12 @@ namespace RelicRewards
 
         public new void KeyDown(KeyboardHookEventArgs e)
         {
+            // Use Singleton design to store location information
+            LocationInfo currentLocation = LocationInfo._instance;
+
             // Print Screen key was pressed
             if (e.Key == Keys.PrintScreen)
             {
-                Debug.WriteLine("Print Screen pressed");
                 // Grab image from screen and convert to black and white using a threshold
                 PrintScreenThreshold();
 
@@ -123,40 +125,19 @@ namespace RelicRewards
 
                     // Warframe Relics are displayed using A-Z, a-z, and &
                     tessBaseAPI.SetVariable("tessedit_char_whitelist", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz&");
-                    // Value to tweak space recognition. DE is inconsistant :/ (remove in future)
-                    //tessBaseAPI.SetVariable("tosp_min_sane_kn_sp", "3.35");
 
                     // Set input file
                     Pix pix = tessBaseAPI.SetImage(inputFile);
 
-                    TB_Part1.Text = GetText(tessBaseAPI, GlobalVar.PART1, 580);
-                    TB_Part2.Text = GetText(tessBaseAPI, GlobalVar.PART2, 580);
-                    if (GlobalVar.NUMPEOPLE >= 3)
+                    TB_Part1.Text = GetText(tessBaseAPI, currentLocation.Part1Loc, 580);
+                    TB_Part2.Text = GetText(tessBaseAPI, currentLocation.Part2Loc, 580);
+                    if (currentLocation.NumPeople >= 3)
                     {
-                        TB_Part3.Text = GetText(tessBaseAPI, GlobalVar.PART3, 580);
+                        TB_Part3.Text = GetText(tessBaseAPI, currentLocation.Part3Loc, 580);
                     }
-                    if (GlobalVar.NUMPEOPLE == 4)
+                    if (currentLocation.NumPeople == 4)
                     {
-                        TB_Part4.Text = GetText(tessBaseAPI, GlobalVar.PART4, 580);
-                    }
-
-
-                    // Two-lined parts
-                    if (TB_Part1.Text.Trim() == "Blueprint")
-                    {
-                        TB_Part1.Text = GetText(tessBaseAPI, GlobalVar.PART1, 550);
-                    }
-                    if (TB_Part2.Text.Trim() == "Blueprint")
-                    {
-                        TB_Part2.Text = GetText(tessBaseAPI, GlobalVar.PART2, 550);
-                    }
-                    if (TB_Part3.Text.Trim() == "Blueprint" && GlobalVar.NUMPEOPLE >= 3)
-                    {
-                        TB_Part3.Text = GetText(tessBaseAPI, GlobalVar.PART3, 550);
-                    }
-                    if (TB_Part4.Text.Trim() == "Blueprint" && GlobalVar.NUMPEOPLE == 4)
-                    {
-                        TB_Part4.Text = GetText(tessBaseAPI, GlobalVar.PART4, 550);
+                        TB_Part4.Text = GetText(tessBaseAPI, currentLocation.Part4Loc, 580);
                     }
 
                     tessBaseAPI.Dispose();
@@ -168,24 +149,23 @@ namespace RelicRewards
                     {
                         GetPriceJson(client, TB_Part1, TB_Plat1);
                         GetPriceJson(client, TB_Part2, TB_Plat2);
-                        if (GlobalVar.NUMPEOPLE >= 3)
+                        if (currentLocation.NumPeople >= 3)
                         {
                             GetPriceJson(client, TB_Part3, TB_Plat3);
                         }
-                        if (GlobalVar.NUMPEOPLE == 4)
+                        if (currentLocation.NumPeople == 4)
                         {
                             GetPriceJson(client, TB_Part4, TB_Plat4);
                         }
 
-
                         // These get cached
                         GetDucatsJson(client, TB_Part1, TB_Ducats1);
                         GetDucatsJson(client, TB_Part2, TB_Ducats2);
-                        if (GlobalVar.NUMPEOPLE >= 3)
+                        if (currentLocation.NumPeople >= 3)
                         {
                             GetDucatsJson(client, TB_Part3, TB_Ducats3);
                         }
-                        if (GlobalVar.NUMPEOPLE == 4)
+                        if (currentLocation.NumPeople == 4)
                         {
                             GetDucatsJson(client, TB_Part4, TB_Ducats4);
                         }
@@ -195,20 +175,14 @@ namespace RelicRewards
                     List<PlatDucats> platDuc = new List<PlatDucats>();
                     platDuc.Add(new PlatDucats(TB_Part1, TB_Ducats1));
                     platDuc.Add(new PlatDucats(TB_Part2, TB_Ducats2));
-                    if (GlobalVar.NUMPEOPLE >= 3)
+                    if (currentLocation.NumPeople >= 3)
                     {
                         platDuc.Add(new PlatDucats(TB_Part3, TB_Ducats3));
                     }
-                    if (GlobalVar.NUMPEOPLE == 4)
+                    if (currentLocation.NumPeople == 4)
                     {
                         platDuc.Add(new PlatDucats(TB_Part4, TB_Ducats4));
                     }
-
-                    Debug.WriteLine(TB_Part1.Tag + " " + TB_Ducats1.Tag);
-                    Debug.WriteLine(TB_Part2.Tag + " " + TB_Ducats2.Tag);
-                    Debug.WriteLine(TB_Part3.Tag + " " + TB_Ducats3.Tag);
-                    Debug.WriteLine(TB_Part4.Tag + " " + TB_Ducats4.Tag);
-
 
                     // Sort by Plat, then Ducats
                     platDuc = platDuc.OrderByDescending(o => Int32.Parse(o.plat.Tag.ToString())).ThenByDescending(o => Int32.Parse(o.ducats.Tag.ToString())).ToList();
@@ -250,10 +224,10 @@ namespace RelicRewards
                 EnableRow(false, LB_Part3, TB_Part3, TB_Plat3, TB_Ducats3);
                 EnableRow(false, LB_Part4, TB_Part4, TB_Plat4, TB_Ducats4);
 
-                GlobalVar.NUMPEOPLE = 2;
+                currentLocation.NumPeople = 2;
 
-                GlobalVar.PART1 = 725;
-                GlobalVar.PART2 = 1300;
+                currentLocation.Part1Loc = 725;
+                currentLocation.Part2Loc = 1300;
             }
             else if (e.Key == Keys.NumPad3)
             {
@@ -263,11 +237,11 @@ namespace RelicRewards
                 EnableRow(true, LB_Part3, TB_Part3, TB_Plat3, TB_Ducats3);
                 EnableRow(false, LB_Part4, TB_Part4, TB_Plat4, TB_Ducats4);
 
-                GlobalVar.NUMPEOPLE = 3;
+                currentLocation.NumPeople = 3;
 
-                GlobalVar.PART1 = 435;
-                GlobalVar.PART2 = 1011;
-                GlobalVar.PART3 = 1590;
+                currentLocation.Part1Loc = 435;
+                currentLocation.Part2Loc = 1011;
+                currentLocation.Part3Loc = 1590;
             }
             else if (e.Key == Keys.NumPad4)
             {
@@ -277,12 +251,12 @@ namespace RelicRewards
                 EnableRow(true, LB_Part3, TB_Part3, TB_Plat3, TB_Ducats3);
                 EnableRow(true, LB_Part4, TB_Part4, TB_Plat4, TB_Ducats4);
 
-                GlobalVar.NUMPEOPLE = 4;
+                currentLocation.NumPeople = 4;
 
-                GlobalVar.PART1 = 638;
-                GlobalVar.PART2 = 961;
-                GlobalVar.PART3 = 1287;
-                GlobalVar.PART4 = 1610;
+                currentLocation.Part1Loc = 638;
+                currentLocation.Part2Loc = 961;
+                currentLocation.Part3Loc = 1287;
+                currentLocation.Part4Loc = 1610;
             }
             else if (e.Key == Keys.Pause)
             {
@@ -292,10 +266,10 @@ namespace RelicRewards
 
         public void PrintScreenThreshold()
         {
-            Bitmap printscreen = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
-            System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(printscreen as Image);
-            graphics.CopyFromScreen(0, 0, 0, 0, printscreen.Size);
-            //Bitmap printscreen = new Bitmap("test\\new2.jpg");
+            //Bitmap printscreen = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+            //System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(printscreen as Image);
+            //graphics.CopyFromScreen(0, 0, 0, 0, printscreen.Size);
+            Bitmap printscreen = new Bitmap("test\\new2.jpg");
 
             using (System.Drawing.Graphics gr = System.Drawing.Graphics.FromImage(printscreen))
             {
@@ -339,50 +313,30 @@ namespace RelicRewards
             stringBuilder = stringBuilder.Replace("\n", String.Empty);
             string guess = stringBuilder.ToString();
 
-            Debug.WriteLine("Raw guess: " + guess);
-            // The only word we really want OCR to get 100% correct is "Blu" because of 2-lined parts
-            // This considers Blu == Blueprint
-            /*int index = guess.IndexOf("Blu");
-
-            if (index > 0)
-            {
-                guess = guess.Substring(0, index);
-                guess += "Blueprint";
-            }*/
-
             // Changed to use Levenshtein here due to important of having a matching "Blueprint" word
-            Levenshtein lev = new Fastenshtein.Levenshtein("Blueprint");
-            int levenshteinDistance = lev.DistanceFrom(guess);
+            Levenshtein levBP = new Fastenshtein.Levenshtein("Blueprint");
+            int levBPDistance = levBP.DistanceFrom(guess);
 
-            Debug.WriteLine("Distance from Blueprint: " + levenshteinDistance);
+            Debug.WriteLine("Distance from Blueprint: " + levBPDistance);
 
-            if (levenshteinDistance < 4)
+            // If there is a 4-character difference, accept the word is == "Blueprint"
+            // Adjust the offset for 2-lined parts
+            if (levBPDistance < 4)
             {
-                guess = "Blueprint";
+                guess = GetText(tessBaseAPI, partX, 550);
             }
-
-            // Pending removal due to Lev algo
-            /*if ((!guess.Contains("Carrier") && !guess.Contains("Wyrm") && !guess.Contains("Helios")) &&
-                (guess.Contains("Systems") || guess.Contains("Chassis") || guess.Contains("Neuroptics")))
-            {
-                guess = guess.Replace(" Blueprint", "");
-            }*/
 
             // Match whatever result we get to the closest selling item name from Warframe.market
             // We want to ignore "Blueprint" because this indicates that it's a 2-lined item
             if (guess != "Blueprint" && !guess.Contains("Forma"))
             {
-                Debug.Write("Old: " + guess);
+                Debug.Write("\nOld: " + guess);
 
                 guess = FindClosestWord(guess);
 
                 Debug.WriteLine(" | New: " + guess);
             }
 
-            // Pending removal due to Lev algo
-            //guess = guess.Replace("Band", "Collar Band").Replace("Buckle", "Collar Buckle").Replace("&", "and");
-
-            Debug.WriteLine(guess);
             return guess;
         }
 
@@ -523,7 +477,7 @@ namespace RelicRewards
 
                 if (numDucats.Trim() != "")
                 {
-                    ducats.Text = numDucats + " duc";
+                    ducats.Text = numDucats + " d";
                     ducats.Tag = numDucats;
                 }
                 else
@@ -531,10 +485,7 @@ namespace RelicRewards
                     ducats.Text = "UNKN[DUC]";
                     ducats.Tag = -1;
 
-                    if (File.Exists(string.Format("cache\\{0}.json", url)))
-                    {
-                        File.Delete(string.Format("cache\\{0}.json", url));
-                    }
+                    File.Delete(string.Format("cache\\{0}.json", url));
                 }
             }
         }
@@ -566,10 +517,7 @@ namespace RelicRewards
                 ducats.Text = "UNKN[JD]";
                 ducats.Tag = -1;
 
-                if (File.Exists(partJson))
-                {
-                    File.Delete(partJson);
-                }
+                File.Delete(partJson);
 
                 if (part.Text == "")
                 {
