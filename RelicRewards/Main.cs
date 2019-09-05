@@ -121,42 +121,42 @@ namespace RelicRewards
                     // Set the Page Segmentation mode
                     tessBaseAPI.SetPageSegMode(psm);
 
-                    // Warframe Relics are only displayed in caps and &
-                    tessBaseAPI.SetVariable("tessedit_char_whitelist", "ABCDEFGHIJKLMNOPQRSTUVWXYZ&");
+                    // Warframe Relics are only displayed in A-Z, a-z, and &
+                    tessBaseAPI.SetVariable("tessedit_char_whitelist", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz&");
                     // Value to tweak space recognition. DE is inconsistant :/
-                    tessBaseAPI.SetVariable("tosp_min_sane_kn_sp", "3.35");
+                    //tessBaseAPI.SetVariable("tosp_min_sane_kn_sp", "3.35");
 
                     // Set input file
                     Pix pix = tessBaseAPI.SetImage(inputFile);
-
-                    TB_Part1.Text = GetText(tessBaseAPI, GlobalVar.PART1);
-                    TB_Part2.Text = GetText(tessBaseAPI, GlobalVar.PART2);
+                    
+                    TB_Part1.Text = GetText(tessBaseAPI, GlobalVar.PART1, 580);
+                    TB_Part2.Text = GetText(tessBaseAPI, GlobalVar.PART2, 580);
                     if (GlobalVar.NUMPEOPLE >= 3)
                     {
-                        TB_Part3.Text = GetText(tessBaseAPI, GlobalVar.PART3);
+                        TB_Part3.Text = GetText(tessBaseAPI, GlobalVar.PART3, 580);
                     }
                     if (GlobalVar.NUMPEOPLE == 4)
                     {
-                        TB_Part4.Text = GetText(tessBaseAPI, GlobalVar.PART4);
+                        TB_Part4.Text = GetText(tessBaseAPI, GlobalVar.PART4, 580);
                     }
 
 
                     // Two-lined parts
-                    if (TB_Part1.Text.Trim() == "BLUEPRINT")
+                    if (TB_Part1.Text.Trim() == "Blueprint")
                     {
-                        TB_Part1.Text = GetText(tessBaseAPI, GlobalVar.PART1, 582);
+                        TB_Part1.Text = GetText(tessBaseAPI, GlobalVar.PART1, 550);
                     }
-                    if (TB_Part2.Text.Trim() == "BLUEPRINT")
+                    if (TB_Part2.Text.Trim() == "Blueprint")
                     {
-                        TB_Part2.Text = GetText(tessBaseAPI, GlobalVar.PART2, 582);
+                        TB_Part2.Text = GetText(tessBaseAPI, GlobalVar.PART2, 550);
                     }
-                    if (TB_Part3.Text.Trim() == "BLUEPRINT" && GlobalVar.NUMPEOPLE >= 3)
+                    if (TB_Part3.Text.Trim() == "Blueprint" && GlobalVar.NUMPEOPLE >= 3)
                     {
-                        TB_Part3.Text = GetText(tessBaseAPI, GlobalVar.PART3, 582);
+                        TB_Part3.Text = GetText(tessBaseAPI, GlobalVar.PART3, 550);
                     }
-                    if (TB_Part4.Text.Trim() == "BLUEPRINT" && GlobalVar.NUMPEOPLE == 4)
+                    if (TB_Part4.Text.Trim() == "Blueprint" && GlobalVar.NUMPEOPLE == 4)
                     {
-                        TB_Part4.Text = GetText(tessBaseAPI, GlobalVar.PART4, 582);
+                        TB_Part4.Text = GetText(tessBaseAPI, GlobalVar.PART4, 550);
                     }
 
                     tessBaseAPI.Dispose();
@@ -204,11 +204,11 @@ namespace RelicRewards
                         platDuc.Add(new PlatDucats(TB_Part4, TB_Ducats4));
                     }
 
-                    /*Debug.WriteLine(TB_Part1.Tag + " " + TB_Ducats1.Tag);
+                    Debug.WriteLine(TB_Part1.Tag + " " + TB_Ducats1.Tag);
                     Debug.WriteLine(TB_Part2.Tag + " " + TB_Ducats2.Tag);
                     Debug.WriteLine(TB_Part3.Tag + " " + TB_Ducats3.Tag);
                     Debug.WriteLine(TB_Part4.Tag + " " + TB_Ducats4.Tag);
-                    */
+                    
 
                     // Sort by Plat, then Ducats
                     platDuc = platDuc.OrderByDescending(o => Int32.Parse(o.plat.Tag.ToString())).ThenByDescending(o => Int32.Parse(o.ducats.Tag.ToString())).ToList();
@@ -288,10 +288,10 @@ namespace RelicRewards
 
         public void PrintScreenThreshold()
         {
-            Bitmap printscreen = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
-            System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(printscreen as Image);
-            graphics.CopyFromScreen(0, 0, 0, 0, printscreen.Size);
-            //Bitmap printscreen = new Bitmap("test\\akjagara.jpg");
+            //Bitmap printscreen = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+            //System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(printscreen as Image);
+            //graphics.CopyFromScreen(0, 0, 0, 0, printscreen.Size);
+            Bitmap printscreen = new Bitmap("test\\new.jpg");
 
             using (System.Drawing.Graphics gr = System.Drawing.Graphics.FromImage(printscreen))
             {
@@ -304,7 +304,7 @@ namespace RelicRewards
 
                 var ia = new System.Drawing.Imaging.ImageAttributes();
                 ia.SetColorMatrix(new System.Drawing.Imaging.ColorMatrix(gray_matrix));
-                ia.SetThreshold((float)0.33); // Change this threshold as needed
+                ia.SetThreshold((float)0.50); // Change this threshold as needed (old .33)
                 var rc = new Rectangle(0, 0, printscreen.Width, printscreen.Height);
                 gr.DrawImage(printscreen, rc, 0, 0, printscreen.Width, printscreen.Height, GraphicsUnit.Pixel, ia);
 
@@ -313,10 +313,10 @@ namespace RelicRewards
         }
 
         // Grab text from image
-        private string GetText(TessBaseAPI tessBaseAPI, int partX, int partY = 615)
+        private string GetText(TessBaseAPI tessBaseAPI, int partX, int partY)
         {
             // Set image location start
-            tessBaseAPI.SetRectangle(partX, partY, 545, 25);
+            tessBaseAPI.SetRectangle(partX, partY, 311, 33);
 
             // Recognize image
             tessBaseAPI.Recognize();
@@ -335,26 +335,36 @@ namespace RelicRewards
             stringBuilder = stringBuilder.Replace("\n", String.Empty);
             string guess = stringBuilder.ToString();
 
-            // The only word we really want OCR to get 100% correct is "BLUEPRINT" because of 2-lined parts
-            // This considers BLU == BLUEPRINT
-            int index = guess.IndexOf("BLU");
+            Debug.WriteLine("Raw guess: " + guess);
+            // The only word we really want OCR to get 100% correct is "Blu" because of 2-lined parts
+            // This considers Blu == Blueprint
+            /*int index = guess.IndexOf("Blu");
 
             if (index > 0)
             {
                 guess = guess.Substring(0, index);
-                guess += "BLUEPRINT";
+                guess += "Blueprint";
+            }*/
+
+            Levenshtein lev = new Fastenshtein.Levenshtein("Blueprint");
+            int levenshteinDistance = lev.DistanceFrom(guess);
+
+            Debug.WriteLine("Distance from Blueprint: " + levenshteinDistance);
+
+            if(levenshteinDistance < 4)
+            {
+                guess = "Blueprint";
             }
 
-
-            if ((!guess.Contains("CARRIER") && !guess.Contains("WYRM") && !guess.Contains("HELIOS")) &&
-                (guess.Contains("SYSTEMS") || guess.Contains("CHASSIS") || guess.Contains("NEUROPTICS")))
+            if ((!guess.Contains("Carrier") && !guess.Contains("Wyrm") && !guess.Contains("Helios")) &&
+                (guess.Contains("Systems") || guess.Contains("Chassis") || guess.Contains("Neuroptics")))
             {
-                guess = guess.Replace(" BLUEPRINT", "");
+                guess = guess.Replace(" Blueprint", "");
             }
 
             // Match whatever result we get to the closest selling item name from Warframe.market
-            // We want to ignore "BLUEPRINT" because this indicates that it's a 2-lined item
-            if (guess != "BLUEPRINT" && !guess.Contains("FORMA"))
+            // We want to ignore "Blueprint" because this indicates that it's a 2-lined item
+            if (guess != "Blueprint" && !guess.Contains("Forma"))
             {
                 Debug.Write("Old: " + guess);
 
@@ -363,8 +373,9 @@ namespace RelicRewards
                 Debug.WriteLine(" | New: " + guess);
             }
 
-            guess = guess.Replace("BAND", "COLLAR BAND").Replace("BUCKLE", "COLLAR BUCKLE").Replace("&", "AND");
+            guess = guess.Replace("Band", "Collar Band").Replace("Buckle", "Collar Buckle").Replace("&", "and");
 
+            Debug.WriteLine(guess);
             return guess;
         }
 
@@ -381,9 +392,9 @@ namespace RelicRewards
                 string json = r.ReadToEnd();
                 JObject items = (JObject)JsonConvert.DeserializeObject(json);
 
-                foreach (var item in items["payload"]["items"]["en"])
+                foreach (var item in items["payload"]["items"])
                 {
-                    string currentItem = item["item_name"].ToString().ToUpper();
+                    string currentItem = item["item_name"].ToString(); //.ToUpper();
                     int levenshteinDistance = lev.DistanceFrom(currentItem);
 
                     //Debug.WriteLine((string)item["item_name"] + " | " + levenshteinDistance);
@@ -397,11 +408,14 @@ namespace RelicRewards
             }
 
             // Arbitrary value; needs more testing for the sweetspot
-            if (minDistance <= 15)
+            /*if (minDistance <= 15)
             {
                 return potential;
             }
             return word;
+            */
+
+            return potential;
         }
 
         // Warframe.market's API forces us to aquire a large json with many orders

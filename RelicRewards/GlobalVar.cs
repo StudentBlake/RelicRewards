@@ -11,9 +11,9 @@
         // Part locations and number of people in squad
         public static int NUMPEOPLE = 4;
 
-        public static int PART1 = 150;
-        public static int PART2 = 725;
-        public static int PART3 = 1300;
-        public static int PART4 = 1875;
+        public static int PART1 = 638;
+        public static int PART2 = 961;
+        public static int PART3 = 1287;
+        public static int PART4 = 1610;
     }
 }
