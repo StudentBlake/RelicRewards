@@ -41,7 +41,7 @@ namespace RelicRewards
         public Main()
         {
             InitializeComponent();
-            this.Text = LB_ProgName.Text = "Relic Rewards v0.3.1";
+            this.Text = LB_ProgName.Text = "Relic Rewards v0.4 ALPHA";
 
             // Listen for global KeyDown events
             var KeyboardHook = new Hook("Global Action Hook");
@@ -121,14 +121,14 @@ namespace RelicRewards
                     // Set the Page Segmentation mode
                     tessBaseAPI.SetPageSegMode(psm);
 
-                    // Warframe Relics are only displayed in A-Z, a-z, and &
+                    // Warframe Relics are displayed using A-Z, a-z, and &
                     tessBaseAPI.SetVariable("tessedit_char_whitelist", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz&");
-                    // Value to tweak space recognition. DE is inconsistant :/
+                    // Value to tweak space recognition. DE is inconsistant :/ (remove in future)
                     //tessBaseAPI.SetVariable("tosp_min_sane_kn_sp", "3.35");
 
                     // Set input file
                     Pix pix = tessBaseAPI.SetImage(inputFile);
-                    
+
                     TB_Part1.Text = GetText(tessBaseAPI, GlobalVar.PART1, 580);
                     TB_Part2.Text = GetText(tessBaseAPI, GlobalVar.PART2, 580);
                     if (GlobalVar.NUMPEOPLE >= 3)
@@ -163,7 +163,7 @@ namespace RelicRewards
                     pix.Dispose();
 
                     // Grab latest order list for parts
-                    // TODO: Proper requests (this hits the API 4-8 times within a second)
+                    // TODO: Try multiple threads! If that's too fast, cache prices for a duration
                     using (var client = new WebClient())
                     {
                         GetPriceJson(client, TB_Part1, TB_Plat1);
@@ -208,7 +208,7 @@ namespace RelicRewards
                     Debug.WriteLine(TB_Part2.Tag + " " + TB_Ducats2.Tag);
                     Debug.WriteLine(TB_Part3.Tag + " " + TB_Ducats3.Tag);
                     Debug.WriteLine(TB_Part4.Tag + " " + TB_Ducats4.Tag);
-                    
+
 
                     // Sort by Plat, then Ducats
                     platDuc = platDuc.OrderByDescending(o => Int32.Parse(o.plat.Tag.ToString())).ThenByDescending(o => Int32.Parse(o.ducats.Tag.ToString())).ToList();
@@ -225,17 +225,21 @@ namespace RelicRewards
                     // Show current amount of Plat (and Ducats) made in the current session
                     if (Int32.Parse(platDuc[0].plat.Tag.ToString()) != -1)
                     {
-                        GlobalVar.PLAT += Int32.Parse(platDuc[0].plat.Tag.ToString());
+                        //GlobalVar.PLAT += Int32.Parse(platDuc[0].plat.Tag.ToString());
+                        LB_Plat.Tag = Int32.Parse(LB_Plat.Tag.ToString()) + Int32.Parse(platDuc[0].plat.Tag.ToString());
                     }
                     if (Int32.Parse(platDuc[0].ducats.Tag.ToString()) != -1)
                     {
-                        GlobalVar.DUCATS += Int32.Parse(platDuc[0].ducats.Tag.ToString());
+                        //GlobalVar.DUCATS += Int32.Parse(platDuc[0].ducats.Tag.ToString());
+                        LB_Ducs.Tag = Int32.Parse(LB_Ducs.Tag.ToString()) + Int32.Parse(platDuc[0].ducats.Tag.ToString());
                     }
-                    LB_PlatDucats.Text = string.Format("{0} p  ({1} duc)", GlobalVar.PLAT.ToString(), GlobalVar.DUCATS.ToString());
+
+                    LB_Plat.Text = LB_Plat.Tag.ToString() + " p";
+                    LB_Ducs.Text = LB_Ducs.Tag.ToString() + " d";
                 }
                 catch (Exception ex)
                 {
-                    LogError("MAIN: " + ex.Message);
+                    LogError("KeyDown: " + ex.Message);
                 }
             }
             else if (e.Key == Keys.NumPad2)
@@ -275,10 +279,10 @@ namespace RelicRewards
 
                 GlobalVar.NUMPEOPLE = 4;
 
-                GlobalVar.PART1 = 150;
-                GlobalVar.PART2 = 725;
-                GlobalVar.PART3 = 1300;
-                GlobalVar.PART4 = 1875;
+                GlobalVar.PART1 = 638;
+                GlobalVar.PART2 = 961;
+                GlobalVar.PART3 = 1287;
+                GlobalVar.PART4 = 1610;
             }
             else if (e.Key == Keys.Pause)
             {
@@ -288,10 +292,10 @@ namespace RelicRewards
 
         public void PrintScreenThreshold()
         {
-            //Bitmap printscreen = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
-            //System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(printscreen as Image);
-            //graphics.CopyFromScreen(0, 0, 0, 0, printscreen.Size);
-            Bitmap printscreen = new Bitmap("test\\new.jpg");
+            Bitmap printscreen = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+            System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(printscreen as Image);
+            graphics.CopyFromScreen(0, 0, 0, 0, printscreen.Size);
+            //Bitmap printscreen = new Bitmap("test\\new2.jpg");
 
             using (System.Drawing.Graphics gr = System.Drawing.Graphics.FromImage(printscreen))
             {
@@ -346,21 +350,23 @@ namespace RelicRewards
                 guess += "Blueprint";
             }*/
 
+            // Changed to use Levenshtein here due to important of having a matching "Blueprint" word
             Levenshtein lev = new Fastenshtein.Levenshtein("Blueprint");
             int levenshteinDistance = lev.DistanceFrom(guess);
 
             Debug.WriteLine("Distance from Blueprint: " + levenshteinDistance);
 
-            if(levenshteinDistance < 4)
+            if (levenshteinDistance < 4)
             {
                 guess = "Blueprint";
             }
 
-            if ((!guess.Contains("Carrier") && !guess.Contains("Wyrm") && !guess.Contains("Helios")) &&
+            // Pending removal due to Lev algo
+            /*if ((!guess.Contains("Carrier") && !guess.Contains("Wyrm") && !guess.Contains("Helios")) &&
                 (guess.Contains("Systems") || guess.Contains("Chassis") || guess.Contains("Neuroptics")))
             {
                 guess = guess.Replace(" Blueprint", "");
-            }
+            }*/
 
             // Match whatever result we get to the closest selling item name from Warframe.market
             // We want to ignore "Blueprint" because this indicates that it's a 2-lined item
@@ -373,7 +379,8 @@ namespace RelicRewards
                 Debug.WriteLine(" | New: " + guess);
             }
 
-            guess = guess.Replace("Band", "Collar Band").Replace("Buckle", "Collar Buckle").Replace("&", "and");
+            // Pending removal due to Lev algo
+            //guess = guess.Replace("Band", "Collar Band").Replace("Buckle", "Collar Buckle").Replace("&", "and");
 
             Debug.WriteLine(guess);
             return guess;
@@ -472,7 +479,7 @@ namespace RelicRewards
         {
             try
             {
-                if (!part.Text.Contains("FORMA"))
+                if (!part.Text.Contains("Forma"))
                 {
                     Stream partOrder = client.OpenRead(@"https://api.warframe.market/v1/items/" + part.Text.ToLower().Replace(" ", "_") + "/orders");
                     FindPlat(partOrder, part, partPlat);
@@ -493,7 +500,7 @@ namespace RelicRewards
                     part.Text = "---";
                 }
 
-                LogError(partPlat.Text + " | " + part.Text + ": " + ex.Message);
+                LogError("GetPriceJson: " + partPlat.Text + " | " + part.Text + ": " + ex.Message);
             }
         }
 
@@ -538,7 +545,7 @@ namespace RelicRewards
             string partJson = string.Format("cache\\{0}.json", partUrl);
             try
             {
-                if (!part.Text.Contains("FORMA"))
+                if (!part.Text.Contains("Forma"))
                 {
                     if (!File.Exists(string.Format("cache\\{0}.json", partUrl)))
                     {
@@ -569,7 +576,7 @@ namespace RelicRewards
                     part.Text = "---";
                 }
 
-                LogError(ducats.Text + " | " + part.Text + ": " + ex.Message);
+                LogError("GetDucatsJson: " + ducats.Text + " | " + part.Text + ": " + ex.Message);
             }
         }
 

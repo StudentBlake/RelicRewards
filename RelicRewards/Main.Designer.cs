@@ -28,7 +28,7 @@ namespace RelicRewards
         /// </summary>
         private void InitializeComponent()
         {
-            this.LB_PlatDucats = new System.Windows.Forms.Label();
+            this.LB_Plat = new System.Windows.Forms.Label();
             this.LB_Part1 = new System.Windows.Forms.Label();
             this.LB_Part2 = new System.Windows.Forms.Label();
             this.LB_Part3 = new System.Windows.Forms.Label();
@@ -49,20 +49,22 @@ namespace RelicRewards
             this.TB_Ducats4 = new System.Windows.Forms.TextBox();
             this.LB_ProgName = new System.Windows.Forms.Label();
             this.LB_Total = new System.Windows.Forms.Label();
+            this.LB_Ducs = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // LB_PlatDucats
+            // LB_Plat
             // 
-            this.LB_PlatDucats.BackColor = System.Drawing.Color.Transparent;
-            this.LB_PlatDucats.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.LB_PlatDucats.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LB_PlatDucats.ForeColor = System.Drawing.Color.White;
-            this.LB_PlatDucats.Location = new System.Drawing.Point(338, 150);
-            this.LB_PlatDucats.Name = "LB_PlatDucats";
-            this.LB_PlatDucats.Size = new System.Drawing.Size(100, 20);
-            this.LB_PlatDucats.TabIndex = 0;
-            this.LB_PlatDucats.Text = "0 p  (0 duc)";
-            this.LB_PlatDucats.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.LB_Plat.BackColor = System.Drawing.Color.Transparent;
+            this.LB_Plat.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LB_Plat.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LB_Plat.ForeColor = System.Drawing.Color.White;
+            this.LB_Plat.Location = new System.Drawing.Point(298, 155);
+            this.LB_Plat.Name = "LB_Plat";
+            this.LB_Plat.Size = new System.Drawing.Size(67, 20);
+            this.LB_Plat.TabIndex = 0;
+            this.LB_Plat.Tag = "0";
+            this.LB_Plat.Text = "0 p";
+            this.LB_Plat.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // LB_Part1
             // 
@@ -166,7 +168,7 @@ namespace RelicRewards
             this.LB_Pick.BackColor = System.Drawing.Color.Transparent;
             this.LB_Pick.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LB_Pick.ForeColor = System.Drawing.Color.White;
-            this.LB_Pick.Location = new System.Drawing.Point(22, 153);
+            this.LB_Pick.Location = new System.Drawing.Point(22, 157);
             this.LB_Pick.Name = "LB_Pick";
             this.LB_Pick.Size = new System.Drawing.Size(31, 13);
             this.LB_Pick.TabIndex = 9;
@@ -178,7 +180,7 @@ namespace RelicRewards
             this.TB_Pick.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TB_Pick.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TB_Pick.ForeColor = System.Drawing.Color.White;
-            this.TB_Pick.Location = new System.Drawing.Point(59, 150);
+            this.TB_Pick.Location = new System.Drawing.Point(59, 155);
             this.TB_Pick.Name = "TB_Pick";
             this.TB_Pick.ReadOnly = true;
             this.TB_Pick.Size = new System.Drawing.Size(233, 20);
@@ -303,20 +305,36 @@ namespace RelicRewards
             // 
             this.LB_Total.AutoSize = true;
             this.LB_Total.BackColor = System.Drawing.Color.Transparent;
-            this.LB_Total.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LB_Total.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LB_Total.ForeColor = System.Drawing.Color.White;
-            this.LB_Total.Location = new System.Drawing.Point(298, 153);
+            this.LB_Total.Location = new System.Drawing.Point(353, 139);
             this.LB_Total.Name = "LB_Total";
-            this.LB_Total.Size = new System.Drawing.Size(34, 13);
+            this.LB_Total.Size = new System.Drawing.Size(31, 13);
             this.LB_Total.TabIndex = 20;
-            this.LB_Total.Text = "Total:";
+            this.LB_Total.Text = "Total";
+            this.LB_Total.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // Form1
+            // LB_Ducs
+            // 
+            this.LB_Ducs.BackColor = System.Drawing.Color.Transparent;
+            this.LB_Ducs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LB_Ducs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LB_Ducs.ForeColor = System.Drawing.Color.White;
+            this.LB_Ducs.Location = new System.Drawing.Point(371, 155);
+            this.LB_Ducs.Name = "LB_Ducs";
+            this.LB_Ducs.Size = new System.Drawing.Size(67, 20);
+            this.LB_Ducs.TabIndex = 21;
+            this.LB_Ducs.Tag = "0";
+            this.LB_Ducs.Text = "0 d";
+            this.LB_Ducs.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(459, 182);
+            this.ClientSize = new System.Drawing.Size(459, 184);
+            this.Controls.Add(this.LB_Ducs);
             this.Controls.Add(this.LB_Total);
             this.Controls.Add(this.LB_ProgName);
             this.Controls.Add(this.TB_Ducats4);
@@ -337,9 +355,9 @@ namespace RelicRewards
             this.Controls.Add(this.LB_Part3);
             this.Controls.Add(this.LB_Part2);
             this.Controls.Add(this.LB_Part1);
-            this.Controls.Add(this.LB_PlatDucats);
+            this.Controls.Add(this.LB_Plat);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "Form1";
+            this.Name = "Main";
             this.Opacity = 0.75D;
             this.Text = "Rich Relic";
             this.TopMost = true;
@@ -350,7 +368,7 @@ namespace RelicRewards
 
         #endregion
 
-        private System.Windows.Forms.Label LB_PlatDucats;
+        private System.Windows.Forms.Label LB_Plat;
         private System.Windows.Forms.Label LB_Part1;
         private System.Windows.Forms.Label LB_Part2;
         private System.Windows.Forms.Label LB_Part3;
@@ -371,6 +389,7 @@ namespace RelicRewards
         private System.Windows.Forms.TextBox TB_Ducats4;
         private System.Windows.Forms.Label LB_ProgName;
         private System.Windows.Forms.Label LB_Total;
+        private System.Windows.Forms.Label LB_Ducs;
     }
 }
 
