@@ -254,10 +254,10 @@ namespace RelicRewards
 
         public void PrintScreenThreshold()
         {
-            //Bitmap printscreen = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
-            //System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(printscreen as Image);
-            //graphics.CopyFromScreen(0, 0, 0, 0, printscreen.Size);
-            Bitmap printscreen = new Bitmap(@"test\cap2.jpg");
+            Bitmap printscreen = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+            System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(printscreen as Image);
+            graphics.CopyFromScreen(0, 0, 0, 0, printscreen.Size);
+            //Bitmap printscreen = new Bitmap(@"test\cap2.jpg");
 
             using (System.Drawing.Graphics gr = System.Drawing.Graphics.FromImage(printscreen))
             {
@@ -281,7 +281,7 @@ namespace RelicRewards
         // Grab text from image
         private string GetText(TessBaseAPI tessBaseAPI, int partX, int partY)
         {
-            // These can change depending on resulution/scaling
+            // These can change depending on resolution, HUD scaling, or UI changes
             // TODO: Dynamic scaling
             const int BOXWIDTH = 311;
             const int BOXHEIGHT = 33;
