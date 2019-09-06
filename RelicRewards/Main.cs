@@ -26,25 +26,13 @@ namespace RelicRewards
 {
     public partial class Main : Form
     {
-        public class PlatDucats
-        {
-            public TextBox plat { get; set; }
-            public TextBox ducats { get; set; }
-
-            public PlatDucats(TextBox plat, TextBox ducats)
-            {
-                this.plat = plat;
-                this.ducats = ducats;
-            }
-        }
-
         public Main()
         {
             InitializeComponent();
             this.Text = LB_ProgName.Text = "Relic Rewards v0.4 ALPHA";
 
             // Listen for global KeyDown events
-            var KeyboardHook = new Hook("Global Action Hook");
+            Hook KeyboardHook = new Hook("Global Action Hook");
             KeyboardHook.KeyDownEvent += KeyDown;
 
             // Start form on bottom left
@@ -56,21 +44,21 @@ namespace RelicRewards
 
             // Get list of tradable items and update it daily
             Directory.CreateDirectory("items");
-            if (!File.Exists("items\\items.json") || File.GetLastWriteTime("items\\items.json") <= DateTime.Now.AddDays(-1))
+            if (!File.Exists(@"items\items.json") || File.GetLastWriteTime(@"items\items.json") <= DateTime.Now.AddDays(-1))
             {
                 Debug.WriteLine("New items list obtained");
                 using (var client = new WebClient())
                 {
-                    client.DownloadFile(@"https://api.warframe.market/v1/items", "items\\items.json");
+                    client.DownloadFile(@"https://api.warframe.market/v1/items", @"items\items.json");
                 }
             }
 
             // Create error directory
             Directory.CreateDirectory("error");
             // Create error log
-            if (!File.Exists("error\\errorlog.txt"))
+            if (!File.Exists(@"error\errorlog.txt"))
             {
-                using (StreamWriter w = File.CreateText("error\\errorlog.txt"))
+                using (StreamWriter w = File.CreateText(@"error\errorlog.txt"))
                 {
                     w.WriteLine("** RELIC REWARDS ERROR LOG **");
                 }
@@ -117,7 +105,7 @@ namespace RelicRewards
                     // Initialize tesseract-ocr 
                     if (!tessBaseAPI.Init(dataPath, language, oem))
                     {
-                        throw new Exception("Could not initialize tesseract.");
+                        throw new Exception("Could not initialize tesseract");
                     }
 
                     // Set the Page Segmentation mode
@@ -172,40 +160,40 @@ namespace RelicRewards
 
                     }
 
-                    List<PlatDucats> platDuc = new List<PlatDucats>();
-                    platDuc.Add(new PlatDucats(TB_Part1, TB_Ducats1));
-                    platDuc.Add(new PlatDucats(TB_Part2, TB_Ducats2));
+                    List<InfoContainer> sortContainer = new List<InfoContainer>();
+                    sortContainer.Add(new InfoContainer(TB_Part1, TB_Ducats1));
+                    sortContainer.Add(new InfoContainer(TB_Part2, TB_Ducats2));
                     if (currentLocation.NumPeople >= 3)
                     {
-                        platDuc.Add(new PlatDucats(TB_Part3, TB_Ducats3));
+                        sortContainer.Add(new InfoContainer(TB_Part3, TB_Ducats3));
                     }
                     if (currentLocation.NumPeople == 4)
                     {
-                        platDuc.Add(new PlatDucats(TB_Part4, TB_Ducats4));
+                        sortContainer.Add(new InfoContainer(TB_Part4, TB_Ducats4));
                     }
 
                     // Sort by Plat, then Ducats
-                    platDuc = platDuc.OrderByDescending(o => Int32.Parse(o.plat.Tag.ToString())).ThenByDescending(o => Int32.Parse(o.ducats.Tag.ToString())).ToList();
+                    sortContainer = sortContainer.OrderByDescending(o => Int32.Parse(o.platinum.Tag.ToString())).ThenByDescending(o => Int32.Parse(o.ducats.Tag.ToString())).ToList();
 
                     // If max Plat is low, sort by the reverse
-                    if (Int32.Parse(platDuc[0].plat.Tag.ToString()) < 15)
+                    if (Int32.Parse(sortContainer[0].platinum.Tag.ToString()) < 15)
                     {
-                        platDuc = platDuc.OrderByDescending(o => Int32.Parse(o.ducats.Tag.ToString())).ThenByDescending(o => Int32.Parse(o.plat.Tag.ToString())).ToList();
+                        sortContainer = sortContainer.OrderByDescending(o => Int32.Parse(o.ducats.Tag.ToString())).ThenByDescending(o => Int32.Parse(o.platinum.Tag.ToString())).ToList();
                     }
 
                     // Show best option
-                    TB_Pick.Text = platDuc[0].plat.Text;
+                    TB_Pick.Text = sortContainer[0].platinum.Text;
 
                     // Show current amount of Plat (and Ducats) made in the current session
-                    if (Int32.Parse(platDuc[0].plat.Tag.ToString()) != -1)
+                    if (Int32.Parse(sortContainer[0].platinum.Tag.ToString()) != -1)
                     {
                         //GlobalVar.PLAT += Int32.Parse(platDuc[0].plat.Tag.ToString());
-                        LB_Plat.Tag = Int32.Parse(LB_Plat.Tag.ToString()) + Int32.Parse(platDuc[0].plat.Tag.ToString());
+                        LB_Plat.Tag = Int32.Parse(LB_Plat.Tag.ToString()) + Int32.Parse(sortContainer[0].platinum.Tag.ToString());
                     }
-                    if (Int32.Parse(platDuc[0].ducats.Tag.ToString()) != -1)
+                    if (Int32.Parse(sortContainer[0].ducats.Tag.ToString()) != -1)
                     {
                         //GlobalVar.DUCATS += Int32.Parse(platDuc[0].ducats.Tag.ToString());
-                        LB_Ducs.Tag = Int32.Parse(LB_Ducs.Tag.ToString()) + Int32.Parse(platDuc[0].ducats.Tag.ToString());
+                        LB_Ducs.Tag = Int32.Parse(LB_Ducs.Tag.ToString()) + Int32.Parse(sortContainer[0].ducats.Tag.ToString());
                     }
 
                     LB_Plat.Text = LB_Plat.Tag.ToString() + " p";
@@ -220,9 +208,9 @@ namespace RelicRewards
             {
                 Debug.WriteLine("Switched to 2 people");
 
-                ClearAllExceptTotal();
-                EnableRow(false, LB_Part3, TB_Part3, TB_Plat3, TB_Ducats3);
-                EnableRow(false, LB_Part4, TB_Part4, TB_Plat4, TB_Ducats4);
+                ClearBox();
+                VisibleRow(false, LB_Part3, TB_Part3, TB_Plat3, TB_Ducats3);
+                VisibleRow(false, LB_Part4, TB_Part4, TB_Plat4, TB_Ducats4);
 
                 currentLocation.NumPeople = 2;
 
@@ -233,9 +221,9 @@ namespace RelicRewards
             {
                 Debug.WriteLine("Switched to 3 people");
 
-                ClearAllExceptTotal();
-                EnableRow(true, LB_Part3, TB_Part3, TB_Plat3, TB_Ducats3);
-                EnableRow(false, LB_Part4, TB_Part4, TB_Plat4, TB_Ducats4);
+                ClearBox();
+                VisibleRow(true, LB_Part3, TB_Part3, TB_Plat3, TB_Ducats3);
+                VisibleRow(false, LB_Part4, TB_Part4, TB_Plat4, TB_Ducats4);
 
                 currentLocation.NumPeople = 3;
 
@@ -247,9 +235,9 @@ namespace RelicRewards
             {
                 Debug.WriteLine("Switched to 4 people");
 
-                ClearAllExceptTotal();
-                EnableRow(true, LB_Part3, TB_Part3, TB_Plat3, TB_Ducats3);
-                EnableRow(true, LB_Part4, TB_Part4, TB_Plat4, TB_Ducats4);
+                ClearBox();
+                VisibleRow(true, LB_Part3, TB_Part3, TB_Plat3, TB_Ducats3);
+                VisibleRow(true, LB_Part4, TB_Part4, TB_Plat4, TB_Ducats4);
 
                 currentLocation.NumPeople = 4;
 
@@ -269,7 +257,7 @@ namespace RelicRewards
             //Bitmap printscreen = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
             //System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(printscreen as Image);
             //graphics.CopyFromScreen(0, 0, 0, 0, printscreen.Size);
-            Bitmap printscreen = new Bitmap("test\\new2.jpg");
+            Bitmap printscreen = new Bitmap(@"test\cap2.jpg");
 
             using (System.Drawing.Graphics gr = System.Drawing.Graphics.FromImage(printscreen))
             {
@@ -286,15 +274,20 @@ namespace RelicRewards
                 var rc = new Rectangle(0, 0, printscreen.Width, printscreen.Height);
                 gr.DrawImage(printscreen, rc, 0, 0, printscreen.Width, printscreen.Height, GraphicsUnit.Pixel, ia);
 
-                printscreen.Save(@"rewards.jpg", ImageFormat.Jpeg);
+                printscreen.Save("rewards.jpg", ImageFormat.Jpeg);
             }
         }
 
         // Grab text from image
         private string GetText(TessBaseAPI tessBaseAPI, int partX, int partY)
         {
+            // These can change depending on resulution/scaling
+            // TODO: Dynamic scaling
+            const int BOXWIDTH = 311;
+            const int BOXHEIGHT = 33;
+
             // Set image location start
-            tessBaseAPI.SetRectangle(partX, partY, 311, 33);
+            tessBaseAPI.SetRectangle(partX, partY, BOXWIDTH, BOXHEIGHT);
 
             // Recognize image
             tessBaseAPI.Recognize();
@@ -321,7 +314,7 @@ namespace RelicRewards
 
             // If there is a 4-character difference, accept the word is == "Blueprint"
             // Adjust the offset for 2-lined parts
-            if (levBPDistance < 4)
+            if (levBPDistance < 5)
             {
                 guess = GetText(tessBaseAPI, partX, 550);
             }
@@ -330,7 +323,8 @@ namespace RelicRewards
             // We want to ignore "Blueprint" because this indicates that it's a 2-lined item
             if (guess != "Blueprint" && !guess.Contains("Forma"))
             {
-                Debug.Write("\nOld: " + guess);
+                Debug.Write("");
+                Debug.Write("Old: " + guess);
 
                 guess = FindClosestWord(guess);
 
@@ -348,7 +342,7 @@ namespace RelicRewards
             int minDistance = 9999;
             string potential = "";
 
-            using (StreamReader r = new StreamReader("items\\items.json"))
+            using (StreamReader r = new StreamReader(@"items\items.json"))
             {
                 string json = r.ReadToEnd();
                 JObject items = (JObject)JsonConvert.DeserializeObject(json);
@@ -485,7 +479,7 @@ namespace RelicRewards
                     ducats.Text = "UNKN[DUC]";
                     ducats.Tag = -1;
 
-                    File.Delete(string.Format("cache\\{0}.json", url));
+                    File.Delete(string.Format(@"cache\{0}.json", url));
                 }
             }
         }
@@ -493,12 +487,12 @@ namespace RelicRewards
         public void GetDucatsJson(WebClient client, TextBox part, TextBox ducats)
         {
             string partUrl = part.Text.ToLower().Replace(" ", "_");
-            string partJson = string.Format("cache\\{0}.json", partUrl);
+            string partJson = string.Format(@"cache\{0}.json", partUrl);
             try
             {
                 if (!part.Text.Contains("Forma"))
                 {
-                    if (!File.Exists(string.Format("cache\\{0}.json", partUrl)))
+                    if (!File.Exists(string.Format(@"cache\{0}.json", partUrl)))
                     {
                         //Debug.WriteLine(@"https://api.warframe.market/v1/items/" + partUrl);
                         client.DownloadFile(@"https://api.warframe.market/v1/items/" + partUrl, partJson);
@@ -528,7 +522,7 @@ namespace RelicRewards
             }
         }
 
-        public void ClearAllExceptTotal()
+        public void ClearBox()
         {
             TB_Part1.Text = "";
             TB_Plat1.Text = "";
@@ -549,7 +543,7 @@ namespace RelicRewards
             //TB_Pick.Text = "";
         }
 
-        public void EnableRow(bool enable, Label LB_Part, TextBox TB_Part, TextBox TB_Plat, TextBox TB_Ducats)
+        public void VisibleRow(bool enable, Label LB_Part, TextBox TB_Part, TextBox TB_Plat, TextBox TB_Ducats)
         {
             LB_Part.Visible = enable;
             TB_Part.Visible = enable;
@@ -562,7 +556,7 @@ namespace RelicRewards
             // Save copy of rewards capture
             string rewards = Guid.NewGuid().ToString() + ".jpg";
 
-            using (StreamWriter w = File.AppendText("error\\errorlog.txt"))
+            using (StreamWriter w = File.AppendText(@"error\errorlog.txt"))
             {
                 w.Write("\r\nLog Entry : ");
                 w.WriteLine("{0} {1}", DateTime.Now.ToLongTimeString(),
@@ -571,7 +565,7 @@ namespace RelicRewards
                 w.WriteLine("  +Rewards: {0}", rewards);
                 w.WriteLine("-------------------------------");
             }
-            File.Copy("rewards.jpg", "error\\" + rewards);
+            File.Copy("rewards.jpg", @"error\" + rewards);
         }
     }
 }

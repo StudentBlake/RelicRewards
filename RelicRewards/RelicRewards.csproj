@@ -64,6 +64,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InfoContainer.cs" />
     <Compile Include="LocationInfo.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
