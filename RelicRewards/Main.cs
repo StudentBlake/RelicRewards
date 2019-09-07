@@ -282,6 +282,7 @@ namespace RelicRewards
         private string GetText(TessBaseAPI tessBaseAPI, int partX, int partY)
         {
             // These can change depending on resolution, HUD scaling, or UI changes
+            // For now, only supports 1440p with full HUD scaling
             // TODO: Dynamic scaling
             const int BOXWIDTH = 311;
             const int BOXHEIGHT = 33;
@@ -417,7 +418,7 @@ namespace RelicRewards
                 // No one is online or Warframe.market doesn't have item
                 else
                 {
-                    partPlat.Text = "UNKN[PLAT]";
+                    partPlat.Text = "???";
                     part.Tag = -1;
                 }
             }
@@ -434,21 +435,21 @@ namespace RelicRewards
                 }
                 else
                 {
-                    part.Tag = -1;
                     partPlat.Text = "---";
+                    part.Tag = -1;
                 }
             }
             catch (Exception ex)
             {
-                partPlat.Text = "UNKN[JP]";
+                partPlat.Text = "???";
                 part.Tag = -1;
 
-                if (part.Text == "")
+                /*if (part.Text == "")
                 {
-                    part.Text = "---";
-                }
+                    part.Text = "???";
+                }*/
 
-                LogError("GetPriceJson: " + partPlat.Text + " | " + part.Text + ": " + ex.Message);
+                LogError("GetPriceJson: " + part.Text + ": " + ex.Message);
             }
         }
 
@@ -476,7 +477,7 @@ namespace RelicRewards
                 }
                 else
                 {
-                    ducats.Text = "UNKN[DUC]";
+                    ducats.Text = "???";
                     ducats.Tag = -1;
 
                     File.Delete(string.Format(@"cache\{0}.json", url));
@@ -494,7 +495,6 @@ namespace RelicRewards
                 {
                     if (!File.Exists(string.Format(@"cache\{0}.json", partUrl)))
                     {
-                        //Debug.WriteLine(@"https://api.warframe.market/v1/items/" + partUrl);
                         client.DownloadFile(@"https://api.warframe.market/v1/items/" + partUrl, partJson);
                     }
 
@@ -508,17 +508,17 @@ namespace RelicRewards
             }
             catch (Exception ex)
             {
-                ducats.Text = "UNKN[JD]";
+                ducats.Text = "???";
                 ducats.Tag = -1;
 
                 File.Delete(partJson);
 
-                if (part.Text == "")
+                /*if (part.Text == "")
                 {
-                    part.Text = "---";
-                }
+                    part.Text = "???";
+                }*/
 
-                LogError("GetDucatsJson: " + ducats.Text + " | " + part.Text + ": " + ex.Message);
+                LogError("GetDucatsJson: " + part.Text + ": " + ex.Message);
             }
         }
 
