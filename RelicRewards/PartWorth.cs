@@ -2,12 +2,12 @@
 
 namespace RelicRewards
 {
-    class InfoContainer
+    class PartWorth
     {
         public TextBox platinum { get; set; }
         public TextBox ducats { get; set; }
 
-        public InfoContainer(TextBox platinum, TextBox ducats)
+        public PartWorth(TextBox platinum, TextBox ducats)
         {
             this.platinum = platinum;
             this.ducats = ducats;

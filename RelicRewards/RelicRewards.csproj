@@ -84,8 +84,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InfoContainer.cs" />
-    <Compile Include="LocationInfo.cs" />
+    <Compile Include="PartWorth.cs" />
+    <Compile Include="PartLocation.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>

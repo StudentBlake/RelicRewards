@@ -83,7 +83,7 @@ namespace RelicRewards
         public new void KeyDown(KeyboardHookEventArgs e)
         {
             // Use Singleton design to store location information
-            LocationInfo currentLocation = LocationInfo._instance;
+            PartLocation currentLocation = PartLocation._instance;
 
             // Print Screen key was pressed
             if (e.Key == Keys.PrintScreen)
@@ -117,15 +117,15 @@ namespace RelicRewards
                     // Set input file
                     Pix pix = tessBaseAPI.SetImage(inputFile);
 
-                    TB_Part1.Text = GetText(tessBaseAPI, currentLocation.Part1Loc, 580);
-                    TB_Part2.Text = GetText(tessBaseAPI, currentLocation.Part2Loc, 580);
+                    TB_Part1.Text = GetText(tessBaseAPI, currentLocation.PartLoc1, 580);
+                    TB_Part2.Text = GetText(tessBaseAPI, currentLocation.PartLoc2, 580);
                     if (currentLocation.NumPeople >= 3)
                     {
-                        TB_Part3.Text = GetText(tessBaseAPI, currentLocation.Part3Loc, 580);
+                        TB_Part3.Text = GetText(tessBaseAPI, currentLocation.PartLoc3, 580);
                     }
                     if (currentLocation.NumPeople == 4)
                     {
-                        TB_Part4.Text = GetText(tessBaseAPI, currentLocation.Part4Loc, 580);
+                        TB_Part4.Text = GetText(tessBaseAPI, currentLocation.PartLoc4, 580);
                     }
 
                     tessBaseAPI.Dispose();
@@ -160,40 +160,40 @@ namespace RelicRewards
 
                     }
 
-                    List<InfoContainer> sortContainer = new List<InfoContainer>();
-                    sortContainer.Add(new InfoContainer(TB_Part1, TB_Ducats1));
-                    sortContainer.Add(new InfoContainer(TB_Part2, TB_Ducats2));
+                    List<PartWorth> sortPartWorth = new List<PartWorth>();
+                    sortPartWorth.Add(new PartWorth(TB_Part1, TB_Ducats1));
+                    sortPartWorth.Add(new PartWorth(TB_Part2, TB_Ducats2));
                     if (currentLocation.NumPeople >= 3)
                     {
-                        sortContainer.Add(new InfoContainer(TB_Part3, TB_Ducats3));
+                        sortPartWorth.Add(new PartWorth(TB_Part3, TB_Ducats3));
                     }
                     if (currentLocation.NumPeople == 4)
                     {
-                        sortContainer.Add(new InfoContainer(TB_Part4, TB_Ducats4));
+                        sortPartWorth.Add(new PartWorth(TB_Part4, TB_Ducats4));
                     }
 
                     // Sort by Plat, then Ducats
-                    sortContainer = sortContainer.OrderByDescending(o => Int32.Parse(o.platinum.Tag.ToString())).ThenByDescending(o => Int32.Parse(o.ducats.Tag.ToString())).ToList();
+                    sortPartWorth = sortPartWorth.OrderByDescending(o => Int32.Parse(o.platinum.Tag.ToString())).ThenByDescending(o => Int32.Parse(o.ducats.Tag.ToString())).ToList();
 
                     // If max Plat is low, sort by the reverse
-                    if (Int32.Parse(sortContainer[0].platinum.Tag.ToString()) < 15)
+                    if (Int32.Parse(sortPartWorth[0].platinum.Tag.ToString()) < 15)
                     {
-                        sortContainer = sortContainer.OrderByDescending(o => Int32.Parse(o.ducats.Tag.ToString())).ThenByDescending(o => Int32.Parse(o.platinum.Tag.ToString())).ToList();
+                        sortPartWorth = sortPartWorth.OrderByDescending(o => Int32.Parse(o.ducats.Tag.ToString())).ThenByDescending(o => Int32.Parse(o.platinum.Tag.ToString())).ToList();
                     }
 
                     // Show best option
-                    TB_Pick.Text = sortContainer[0].platinum.Text;
+                    TB_Pick.Text = sortPartWorth[0].platinum.Text;
 
                     // Show current amount of Plat (and Ducats) made in the current session
-                    if (Int32.Parse(sortContainer[0].platinum.Tag.ToString()) != -1)
+                    if (Int32.Parse(sortPartWorth[0].platinum.Tag.ToString()) != -1)
                     {
                         //GlobalVar.PLAT += Int32.Parse(platDuc[0].plat.Tag.ToString());
-                        LB_Plat.Tag = Int32.Parse(LB_Plat.Tag.ToString()) + Int32.Parse(sortContainer[0].platinum.Tag.ToString());
+                        LB_Plat.Tag = Int32.Parse(LB_Plat.Tag.ToString()) + Int32.Parse(sortPartWorth[0].platinum.Tag.ToString());
                     }
-                    if (Int32.Parse(sortContainer[0].ducats.Tag.ToString()) != -1)
+                    if (Int32.Parse(sortPartWorth[0].ducats.Tag.ToString()) != -1)
                     {
                         //GlobalVar.DUCATS += Int32.Parse(platDuc[0].ducats.Tag.ToString());
-                        LB_Ducs.Tag = Int32.Parse(LB_Ducs.Tag.ToString()) + Int32.Parse(sortContainer[0].ducats.Tag.ToString());
+                        LB_Ducs.Tag = Int32.Parse(LB_Ducs.Tag.ToString()) + Int32.Parse(sortPartWorth[0].ducats.Tag.ToString());
                     }
 
                     LB_Plat.Text = LB_Plat.Tag.ToString() + " p";
@@ -212,10 +212,7 @@ namespace RelicRewards
                 VisibleRow(false, LB_Part3, TB_Part3, TB_Plat3, TB_Ducats3);
                 VisibleRow(false, LB_Part4, TB_Part4, TB_Plat4, TB_Ducats4);
 
-                currentLocation.NumPeople = 2;
-
-                currentLocation.Part1Loc = 725;
-                currentLocation.Part2Loc = 1300;
+                currentLocation.SetPeople2();
             }
             else if (e.Key == Keys.NumPad3)
             {
@@ -225,11 +222,7 @@ namespace RelicRewards
                 VisibleRow(true, LB_Part3, TB_Part3, TB_Plat3, TB_Ducats3);
                 VisibleRow(false, LB_Part4, TB_Part4, TB_Plat4, TB_Ducats4);
 
-                currentLocation.NumPeople = 3;
-
-                currentLocation.Part1Loc = 435;
-                currentLocation.Part2Loc = 1011;
-                currentLocation.Part3Loc = 1590;
+                currentLocation.SetPeople3();
             }
             else if (e.Key == Keys.NumPad4)
             {
@@ -239,12 +232,7 @@ namespace RelicRewards
                 VisibleRow(true, LB_Part3, TB_Part3, TB_Plat3, TB_Ducats3);
                 VisibleRow(true, LB_Part4, TB_Part4, TB_Plat4, TB_Ducats4);
 
-                currentLocation.NumPeople = 4;
-
-                currentLocation.Part1Loc = 638;
-                currentLocation.Part2Loc = 961;
-                currentLocation.Part3Loc = 1287;
-                currentLocation.Part4Loc = 1610;
+                currentLocation.SetPeople4();
             }
             else if (e.Key == Keys.Pause)
             {
@@ -254,10 +242,10 @@ namespace RelicRewards
 
         public void PrintScreenThreshold()
         {
-            Bitmap printscreen = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
-            System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(printscreen as Image);
-            graphics.CopyFromScreen(0, 0, 0, 0, printscreen.Size);
-            //Bitmap printscreen = new Bitmap(@"test\cap2.jpg");
+            //Bitmap printscreen = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+            //System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(printscreen as Image);
+            //graphics.CopyFromScreen(0, 0, 0, 0, printscreen.Size);
+            Bitmap printscreen = new Bitmap(@"test\cap2.jpg");
 
             using (System.Drawing.Graphics gr = System.Drawing.Graphics.FromImage(printscreen))
             {
@@ -444,6 +432,7 @@ namespace RelicRewards
                 partPlat.Text = "???";
                 part.Tag = -1;
 
+                // Pending delete
                 /*if (part.Text == "")
                 {
                     part.Text = "???";
@@ -513,6 +502,7 @@ namespace RelicRewards
 
                 File.Delete(partJson);
 
+                // Pending delete
                 /*if (part.Text == "")
                 {
                     part.Text = "???";
@@ -539,8 +529,6 @@ namespace RelicRewards
             TB_Part4.Text = "";
             TB_Plat4.Text = "";
             TB_Ducats4.Text = "";
-
-            //TB_Pick.Text = "";
         }
 
         public void VisibleRow(bool enable, Label LB_Part, TextBox TB_Part, TextBox TB_Plat, TextBox TB_Ducats)
