@@ -1,6 +1,6 @@
 # Relic Rewards
 
-![main](https://cdn.discordapp.com/attachments/373320120707055617/484055262399823873/sample.PNG)
+![main](https://i.imgur.com/0hqhNIL.png)
 
 Automatically get the best value for your relics
 
